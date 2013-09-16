@@ -132,7 +132,7 @@ function decorate(data){
 		
 		//Server has not updated its information for a long time
 		if(occ.information.indexOf("probably outdated") != -1){
-			$(value).children(".innerText").html("Cipmap server inoperable since <span class=\"ageTimer\" data-seconds=\""+secs+"\" title=\"Server said: "+occ.information+"\"></span>");
+			$(value).children(".innerText").html("Cipmap ser&shy;ver in&shy;oper&shy;able since <span class=\"ageTimer\" data-seconds=\""+secs+"\" title=\"Server said: "+occ.information+"\"></span>");
 			return;
 		}
 		
@@ -149,7 +149,7 @@ function decorate(data){
 			
 			//The server has not reached the machine for some time
 			if(occ.information.indexOf("never reached") != -1){
-				$(value).children(".innerText").html("Probably turned off<br / >Last update: <span class=\"ageTimer\" data-seconds=\""+secs+"\" title=\"Server said: "+secs+" "+occ.information+"\"></span>");
+				$(value).children(".innerText").html("Pro&shy;ba&shy;bly turned off<br / >Last update: <span class=\"ageTimer\" data-seconds=\""+secs+"\" title=\"Server said: "+secs+" "+occ.information+"\"></span>");
 				
 			}
 		}
