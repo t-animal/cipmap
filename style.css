@@ -1,0 +1,123 @@
+div { -moz-box-sizing:border-box; box-sizing:border-box;}
+
+h1 {
+	margin-top:0;
+}
+
+.leftpane {
+	border:1px solid black;
+	width:100%;
+	margin-top:10px;
+	padding:2px;
+	font-size:1.5em;
+	transition: background .25s, color .25s;
+}
+
+.leftpane:hover, .leftpane.current{
+	color:white;
+	background-color:black;
+	transition: background .25s, color .25s;
+	cursor:pointer;
+}
+
+.leftpane .loadimage{
+	visibility:hidden;
+	float:right;
+	height:25px;
+	vertical-align:middle;
+}
+
+@-webkit-keyframes rotating {
+	from{ -webkit-transform: rotate(0deg); }
+	to{ -webkit-transform: rotate(360deg);}
+}
+
+@keyframes rotating{
+	from { transform: rotate(0deg);}
+	to { transform: rotate(360deg);}
+}
+
+.loadimage.rotating{
+	animation: rotating 2s linear infinite;
+	-webkit-animation: rotating 2s linear infinite;
+}
+
+.leftpane.current .loadimage{
+	visibility:visible;
+}
+		
+.leftpane.first{
+	margin-top:auto;
+}
+
+.leftpane.newblock{
+	margin-top:30px;
+}
+
+.kiste{
+	width:100px;
+	height:100px;
+	position:absolute;
+	border:1px solid black;
+	background-color:#F0F0F0;
+	padding:3px;
+}
+
+.kiste.occupied{
+	background-color:#F0A0A0;
+}
+.kiste.free{
+	background-color:#A0F0A0;
+}
+
+.kiste .name{
+	font-family:"Bitstream Vera Sans";
+	text-align:center;
+	width:100%;
+	display:block;
+	font-weight:bold;
+	margin-bottom:-10px;
+}
+
+.innerText {
+	font-size:small;
+}
+
+h1,h2,h3 {
+	font-family:Verdana;
+}
+
+a {
+	font-family:Verdana;
+	text-decoration:none;
+	color:inherit;
+}
+
+.door {
+	position:absolute;
+	border:1px solid darkgray;
+}
+
+#mainContent {
+	border:1px solid darkgray;
+	margin:1px;
+}
+
+#mainContentContainer {
+}
+
+.doorView #mainContent   {
+/*	transform:rotate(90deg) translate(50%, -50%);*/
+	transform:scale(-1,-1);
+ 	transform-origin: center center;
+}
+
+.doorView .kiste {
+/*	transform:rotate(-90deg);*/
+	transform:scale(-1,-1);
+}
+
+#mainContent a { 
+	color:darkblue;
+	padding:10px;
+}
