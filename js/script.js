@@ -292,4 +292,27 @@ function initSettings(){
 	
 	if($.cookie('showSeconds'))
 		$("#showSeconds").prop("checked", true);
+	
+	if($.cookie('colloquialNames'))
+		$("#colloquialNames").prop("checked", true);
+}
+
+function colloquialNames(name){
+	names = {cip2:["CIP2", "02.151"],
+		 bibcip:["Bibcip", "02.153"],
+		 cip1:["CIP1", "01.155"],
+		 wincip:["Wincip", "01.153"],
+		 stfucip:["STFUcip", "00.153"],
+		 gracip:["CIP4", "00.156"],
+		 huber:["Huber", "0.01-142"]
+		}
+	$(".leftpane").each(function(){
+		if($(this).attr("data-cip") && eval("names."+$(this).attr("data-cip"))){
+			if($.cookie('colloquialNames')){
+				$(this).children(".name").html(eval("names."+$(this).attr("data-cip"))[0])
+			}else{
+				$(this).children(".name").html(eval("names."+$(this).attr("data-cip"))[1])
+			}
+		}
+	});
 }
