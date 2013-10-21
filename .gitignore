@@ -4,3 +4,4 @@
 
 *server/*log
 *server/users*
+*server/optedInUsers
