@@ -6,9 +6,11 @@
 		<meta name="description" lang="en" content="The CIPMap displays the computer pools (CIP) of the FAU Erlangen graphically and shows, which computers are occupied. Data is only visible from inside the network of the Friedrich Alexander University." />
 		
 		<link rel="stylesheet" type="text/css" href="style.css" />
+		<link rel="stylesheet" type="text/css" href="socialshareprivacy.css" />
 	
 		<script type="text/javascript" src="js/jquery-1.10.2.js"></script>
 		<script type="text/javascript" src="js/jquery.cookie.js"></script>
+		<script type="text/javascript" src="js/social_bookmarks.js"></script>
 		<script type="text/javascript" src="js/map.js"></script>
 		<script type="text/javascript" src="js/script.js"></script>
 	</head>
@@ -41,6 +43,10 @@
 		<input type="checkbox" id="keepUpdated" onclick="$.cookie('keepUpdated', $(this).prop('checked'))" /> Refresh every 60s <br />
 		<input type="checkbox" id="colloquialNames" onclick="$.cookie('colloquialNames', $(this).prop('checked'));colloquialNames();" /> Colloquial CIP-names <br />
 		</div>
+		<div class="social_share_privacy"></div>
+		<script type="text/javascript">
+			$('.social_share_privacy').socialSharePrivacy()
+		</script>
 	</div>
 	
 

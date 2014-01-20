@@ -7,9 +7,11 @@
 		
 		
 		<link rel="stylesheet" type="text/css" href="style.css" />
+		<link rel="stylesheet" type="text/css" href="socialshareprivacy.css" />
 	
 		<script type="text/javascript" src="js/jquery-1.10.2.js"></script>
 		<script type="text/javascript" src="js/jquery.cookie.js"></script>
+		<script type="text/javascript" src="js/social_bookmarks.js"></script>
 		<script type="text/javascript" src="js/map.js"></script>
 		<script type="text/javascript" src="js/script.js"></script>
 	</head>
@@ -27,6 +29,10 @@
 		<a href="faq.html"><div class="leftpane newblock ">Faq</div></a>
 		<a href="optin.html"><div class="leftpane current">Opt-In</div></a>
 		<script type="text/javascript">colloquialNames();</script>
+		<div class="social_share_privacy"></div>
+		<script type="text/javascript">
+			$('.social_share_privacy').socialSharePrivacy()
+		</script>
 	</div>
 	
 	<div style="padding-left:10px; float:right; width:90%; height:100%;">
