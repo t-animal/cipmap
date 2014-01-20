@@ -151,7 +151,7 @@ Content-Type: application/json\r\n\r\n{}""".format(len(sendString), sendString))
 def passOnCipData(conn, callback):	
 	global optedInUsers, sunwutCommand
 	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect(("faui02", 1338))
+        s.connect(("localhost", 1339))
         	        
         data = s.recv(1024)
         
