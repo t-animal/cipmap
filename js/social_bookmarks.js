@@ -116,6 +116,7 @@
 					'display_name'		: 'Flattr',
 					'the_title'			: 'CIPMap',
 					'referrer_track'	: '',
+					'uri'			: 'http://cipmap.t-animal.de',
 					'the_excerpt'		: 'Stellt die CIP-Pools der FAU graphisch dar und zeigt, welche Rechner frei sind.'
 				},
 				'xing' : {
@@ -322,7 +323,7 @@
 				}
 
 				var flattr_title = options.services.flattr.the_title;
-				var flattr_uri = encodeURIComponent(uri);
+	            		var flattr_uri = (options.services.flattr.uri=="" || options.services.flattr.uri == undefined)?encodeURIComponent(uri):encodeURIComponent(options.services.flattr.uri);
 				var flattr_excerpt = options.services.flattr.the_excerpt;
 				var flattr_code = '<iframe src="https://api.flattr.com/button/view/?uid=' + options.services.flattr.uid + '&amp;url=' + flattr_uri + '&amp;title=' + flattr_title + '&amp;description=' + flattr_excerpt + '&amp;category=text&amp;language=de_DE&amp;button=compact" style="width:110px; height:22px;" allowtransparency="true" frameborder="0" scrolling="no"></iframe>';
 				var flattr_dummy_btn = '<span class="flattr_dummy twoclick-network">&nbsp;</span>';
