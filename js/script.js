@@ -288,6 +288,7 @@ function decorate(data){
 			}
 		}else{
 			$(value).addClass("free");
+			$(value).children(".innerText").html("");
 			
 			//The server has not reached the machine for some time
 			if(occ.information.indexOf("never reached") != -1){
