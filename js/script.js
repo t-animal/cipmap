@@ -97,91 +97,42 @@ function drawMap(cip) {
 		var top = $(this).offset().top;
 		var x = event.pageX;
 		var y = event.pageY;
-		var rot = parseInt($('option:selected', $("#doorPreselect")).val());
+		var rot = parseInt($('option:selected', $("#doorPreselect")).val()) + door.position;
 		var lightUp = null;
 		
 		
-		//left = 0
-		//bottom = 1
-		//right = 2
-		//top = 3
 		if(Math.abs(x - left) < 20){
-			//Near left border
-			//rot  => lightUp
-			//left => right     0 => 2
-			//bottom => bottom  1 => 1
-			//right => left     2 => 0
-			//top => top        3 => 3
-			if(rot%2 == 0)
-				lightUp = 2-rot;
-			else
-				lightUp = rot;		
+			lightUp = 0;	
 			
 		}else if( (rot%2 == 0 && Math.abs(left + width  - x) < 20 )
 		        ||(rot%2 == 1 && Math.abs(left + height - x) < 20 )){
-			//Near right border
-			//rot  => lightUp
-			//left => left    0 => 0
-			//bottom =>  top  1 => 3
-			//right => right  2 => 2
-			//top => bottom   3 => 1
-			if(rot%2 == 0)
-				lightUp = rot;
-			else
-				lightUp = (rot+2)%4;
+			lightUp = 2;
 			
 		}else if(Math.abs(y - top) < 20){
-			//Near top border
-			//rot  => lightUp
-			//left => bottom  0 => 1
-			//bottom => left 1 => 0
-			//right => top   2 => 3
-			//top => right   3 => 2
-			if(rot%2 == 0)
-				lightUp = rot+1;	
-			else
-				lightUp = rot-1;
+			lightUp = 3;
 			
 		}else if( (rot%2 == 0 && Math.abs(top + height - y) < 20) 
 		        ||(rot%2 == 1 && Math.abs(top + width  - y) < 20)){
-			//Near bottom border
-			//rot  => lightUp
-			//left => top      0 => 3
-			//bottom => right  1 => 2
-			//right => bottom  2 => 1
-			//top => left      3 => 0
-			lightUp = 3-rot;
+			lightUp = 1;
 		}
 		
+		$(this).css("box-shadow", "none");
+		$(this).css("cursor", "auto");
+		$(this).css("border-color", "darkgray");
+		$(this).attr("title", "");
+		
 		if(lightUp != null){
-			if(lightUp == 0){
-				//left border
-				$(this).css("box-shadow", "inset 2px 0px 1px #00a0ff");
-				$(this).css("border-left-color", "#00a0ff");
+			var box_shadows = new Array("inset 2px 0px 1px #00a0ff", "inset 0px -2px 1px #00a0ff", "inset -2px 0px 1px #00a0ff", "inset 0px 2px 1px #00a0ff");
+			var border_names = new Array("border-left-color", "border-bottom-color", "border-right-color", "border-top-color");
 			
-			}else if(lightUp == 1){
-				//bottom border
-				$(this).css("box-shadow", "inset 0px -2px 1px #00a0ff");
-				$(this).css("border-bottom-color", "#00a0ff");
+			$(this).css("border-color", "darkgray");
+			$(this).css("box-shadow", "none");
+			$(this).css("box-shadow", box_shadows[(lightUp + door.position - parseInt($('option:selected', $("#doorPreselect")).val()) + 4)%4]);
+			$(this).css(border_names[(lightUp + door.position - parseInt($('option:selected', $("#doorPreselect")).val()) + 4)%4], "#00a0ff");
 			
-			}else if(lightUp == 2){
-				//right border
-				$(this).css("box-shadow", "inset -2px 0px 1px #00a0ff");
-				$(this).css("border-right-color", "#00a0ff");
-			
-			}else if(lightUp == 3){
-				//top border
-				$(this).css("box-shadow", "inset 0px 2px 1px #00a0ff");
-				$(this).css("border-top-color", "#00a0ff");
-			}
 			$(this).css("cursor", "pointer");
 			$(this).attr("title", "Click here to rotate the map and put the door on this edge");
 			
-		}else{	
-			$(this).css("box-shadow", "none");
-			$(this).css("cursor", "auto");
-			$(this).css("border-color", "darkgray");
-			$(this).attr("title", "");
 		}
 	});
 	
@@ -199,7 +150,7 @@ function drawMap(cip) {
 		var top = $(this).offset().top;
 		var x = event.pageX;
 		var y = event.pageY;
-		var rot = parseInt($('option:selected', $("#doorPreselect")).val());
+		var rot = parseInt($('option:selected', $("#doorPreselect")).val()) + door.position;
 		var lightUp = null;
 		
 		
@@ -210,24 +161,28 @@ function drawMap(cip) {
 		if(Math.abs(x - left) < 20){
 			//Near left border
 			$("#doorPreselect option[value='0']").prop('selected',true);
-			rotateMap();	
+			rotateMap();
+			$(this).mousemove();	
 			
 		}else if( (rot%2 == 0 && Math.abs(left + width  - x) < 20 )
 		        ||(rot%2 == 1 && Math.abs(left + height - x) < 20 )){
 			//Near right border
 			$("#doorPreselect option[value='2']").prop('selected',true);
 			rotateMap();
+			$(this).mousemove();
 			
 		}else if(Math.abs(y - top) < 20){
 			//Near top border
 			$("#doorPreselect option[value='3']").prop('selected',true);
 			rotateMap();
+			$(this).mousemove();
 			
 		}else if( (rot%2 == 0 && Math.abs(top + height - y) < 20) 
 		        ||(rot%2 == 1 && Math.abs(top + width  - y) < 20)){
 			//Near bottom border
 			$("#doorPreselect option[value='1']").prop('selected',true);
 			rotateMap();
+			$(this).mousemove();
 		}
 	});
 }
