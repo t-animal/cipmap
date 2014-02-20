@@ -161,7 +161,7 @@ def passOnCipData(conn, callback):
                 
                 for token in tokens[:-1]:
                 	machineRegex = re.compile(r"([\w\d]+)\.informatik\.uni-erlangen\.de \((.*)\)")
-		        personRegex = re.compile(r"([\w\d]{8}) \((.*)\) ?(.*)")
+		        personRegex = re.compile(r"([\w\d]{8}|[\w]{4,}) \((.*)\) ?(.*)")
         
                         m = machineRegex.search(token)
                         
