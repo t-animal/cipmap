@@ -10,7 +10,7 @@ import datetime
 from subprocess import Popen, PIPE, STDOUT
 
 from flask import Flask, request, render_template, Response, json
-import ciputils
+from util import ciputils
 
 class CipmapServer(Flask):
 
@@ -18,7 +18,7 @@ class CipmapServer(Flask):
 		super(CipmapServer, self).__init__(*args, **kwargs)
 		
 		self.optedInUsers = []
-		with open("optedInUsers") as f:
+		with open("data/optedInUsers") as f:
 			self.optedInUsers += f.read().splitlines()
 		
 		formatter = logging.Formatter('%(asctime)s - %(name)-5.5s:%(levelname)-8s - %(message)s')
@@ -140,7 +140,7 @@ def passOnCipData():
         
         #TODO:Filter global opt-out
         #get information on sunrays independently from the cipmap: this is more reliable!
-        for filename in ["users.faui0sr0","users.faui0sr1","users.faui0sr2","users.faui01"]:
+        for filename in ["data/users.faui0sr0","data/users.faui0sr1","data/users.faui0sr2","data/users.faui01"]:
 		with open(filename) as f:
 			timestamp = f.readline()
 			if timestamp == "":

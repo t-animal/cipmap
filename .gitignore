@@ -6,3 +6,4 @@
 *server/*log
 *server/users*
 *server/optedInUsers
+*server/data/*

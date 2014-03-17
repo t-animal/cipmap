@@ -20,5 +20,5 @@ filterOptedOut() {
 	done
 }
 
-date +%s > users.`hostname`
-/opt/SUNWut/bin/utwho -c | awk -F'[.]| *' '{ print $5, $6}' | filterOptedOut  >> users.`hostname`
+date +%s > data/users.`hostname`
+/opt/SUNWut/bin/utwho -c | awk -F'[.]| *' '{ print $5, $6}' | filterOptedOut  >> data/users.`hostname`
