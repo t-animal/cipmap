@@ -132,7 +132,7 @@ def passOnCipData():
 	                p = personRegex.search(token)
 	                
 	                machines[m.group("hostname")] = {"information": m.group("hostinfo"), 
-	                				 "occupied": "true" if p else "false",
+	                				 "occupied": True if p else False,
 	                				 "personname": p.group("login") if p and p.group("login") in app.optedInUsers else "",
 	                				 "persongroup": p.group("group") if p and p.group("login") in app.optedInUsers else ""}
 	              
@@ -150,7 +150,7 @@ def passOnCipData():
 						
 			for (sunray, username) in [line.split(" ") for line in f.read().splitlines()]:
 				machines["Sunray"+sunray] = {"information": "Information on 1 users was last gathered {}s ago!".format(informationAge),
-							     "occupied": "true",
+							     "occupied": True,
 							     "personname": "" if username not in app.optedInUsers else username,
 							     "persongroup": ""}
         
