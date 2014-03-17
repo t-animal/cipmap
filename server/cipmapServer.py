@@ -39,7 +39,7 @@ class CipmapServer(Flask):
 		wlog.addHandler(streamHandler)
 				
 		# create file handler which logs debug messages
-		fileHandler = logging.FileHandler('spam2.log')
+		fileHandler = logging.FileHandler('spam.log')
 		fileHandler.setFormatter(formatter)
 		fileHandler.setLevel(logging.DEBUG)
 		alog.addHandler(fileHandler)
