@@ -94,7 +94,7 @@ def validateOptIn():
 				else:
 					response["success"]="true"
 					app.optedInUsers.append(username)
-					os.system("echo {} >> optedInUsers".format(username))
+					os.system("echo {} >> data/optedInUsers".format(username))
 			
 			elif username == "proxy":
 				response["error"] = "Please disable wwwproxy (should already be disabled in Firefox)"
