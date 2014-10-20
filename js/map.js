@@ -1,3 +1,6 @@
+/*
+  Contributors: Dario (update after sunrays were gone)
+*/
 map = {
 "doors":{
 	"cip1":{"position":3, "offset":1 },
@@ -10,42 +13,53 @@ map = {
 },
 //
 "diverse":[
-{"id":"Sunray500770e500130100","name":"FSI","y":0,"x":0}],
-//
-"office":[
-{"id":"faui03d","name":"faui03d","y":5,"x":8},
-{"id":"faui03c","name":"faui03c","y":5,"x":11},
-{"id":"Sunray00144fd18b27","name":"Sunray","y":5,"x":16},
-{"id":"faui03a","name":"faui03a","y":30,"x":3},
-{"id":"Sunray00144fd188b3","name":"Sunray","y":30,"x":8},
-{"id":"faui03b","name":"faui03b","y":30,"x":11},
-{"id":"Sunray00144fd18b51","name":"Sunray","y":30,"x":16}],
+{"id": "faui03a", "name": "faui03a", "y": -1, "x": -1}, // admin office
+{"id": "faui03b", "name": "faui03b", "y": -1, "x": -1}, // admin office
+{"id": "faui03c", "name": "faui03c", "y": -1, "x": -1}, // admin office
+{"id": "faui03d", "name": "faui03d", "y": -1, "x": -1}, // admin office
+{"id": "faui03e", "name": "faui03e", "y": -1, "x": -1}, // admin office
+{"id": "faui03f", "name": "faui03f", "y": -1, "x": -1}, // admin office
+{"id": "faui03g", "name": "faui03g", "y": -1, "x": -1}, // EGPA
+{"id": "faui03h", "name": "faui03h", "y": -1, "x": -1}, // EGPA
+{"id": "faui03i", "name": "faui03i", "y": -1, "x": -1}, // FSI Inf
+{"id": "faui03j", "name": "faui03j", "y": -1, "x": -1}, // FSI CE
+{"id": "faui03k", "name": "faui03k", "y": -1, "x": -1}  // FSI MT
+],
 //
 "cip1":[
-{"id":"Sunray080020fe3322","name":"Sunray","y":2,"x":0},
-{"id":"Sunray0003ba0cc361","name":"Sunray","y":0,"x":9},
-{"id":"Sunray0003ba0cc334","name":"Sunray","y":0,"x":8},
-{"id":"Sunray0003ba0ccfad","name":"Sunray","y":0,"x":7},
-{"id":"Sunray0003ba2fd67c","name":"Sunray","y":0,"x":6},
-{"id":"Sunray0003ba0cc331","name":"Sunray","y":0,"x":5},
-{"id":"Sunray0003ba0cc218","name":"Sunray","y":0,"x":4},
-{"id":"Sunray0003ba44e297","name":"Sunray","y":0,"x":3},
-{"id":"faui06h","name":"faui06h","y":2,"x":9},
-{"id":"faui06g","name":"faui06g","y":2,"x":8},
-{"id":"faui06f","name":"faui06f","y":2,"x":7},
-{"id":"faui06e","name":"faui06e","y":2,"x":6},
-{"id":"faui06d","name":"faui06d","y":2,"x":5},
-{"id":"faui06c","name":"faui06c","y":2,"x":4},
-{"id":"faui06b","name":"faui06b","y":2,"x":3},
-{"id":"faui06a","name":"faui06a","y":2,"x":2},
-{"id":"faui06i","name":"faui06i","y":3,"x":9},
-{"id":"faui06j","name":"faui06j","y":3,"x":8},
-{"id":"faui06k","name":"faui06k","y":3,"x":7},
-{"id":"faui06l","name":"faui06l","y":3,"x":6},
-{"id":"faui06m","name":"faui06m","y":3,"x":5},
-{"id":"faui06n","name":"faui06n","y":3,"x":4},
-{"id":"faui06o","name":"faui06o","y":3,"x":3},
-{"id":"faui06p","name":"faui06p","y":3,"x":2},
+{"id":"faui0ea","name":"faui0ea","y":0,"x":3},
+{"id":"faui0eb","name":"faui0eX","y":0,"x":4},
+{"id":"faui0ec","name":"faui0ec","y":0,"x":5},
+{"id":"faui0ed","name":"faui0ed","y":0,"x":6},
+{"id":"faui0ee","name":"faui0ee","y":0,"x":7},
+{"id":"faui0ef","name":"faui0ef","y":0,"x":8},
+{"id":"faui0eg","name":"faui0eg","y":0,"x":9},
+{"id":"faui0eh","name":"faui0eh","y":10,"x":2},
+{"id":"faui0ei","name":"faui0ei","y":10,"x":3},
+{"id":"faui0ej","name":"faui0ej","y":10,"x":4},
+{"id":"faui0ek","name":"faui0ek","y":10,"x":5},
+{"id":"faui0el","name":"faui0el","y":10,"x":6},
+{"id":"faui0em","name":"faui0em","y":10,"x":7},
+{"id":"faui0en","name":"faui0en","y":10,"x":8},
+{"id":"faui0eo","name":"faui0eo","y":10,"x":9},
+//
+{"id":"faui06a","name":"faui06a","y":2,"x":0},
+{"id":"faui06b","name":"faui06b","y":2,"x":2},
+{"id":"faui06c","name":"faui06c","y":2,"x":3},
+{"id":"faui06d","name":"faui06d","y":2,"x":4},
+{"id":"faui06e","name":"faui06e","y":2,"x":5},
+{"id":"faui06f","name":"faui06f","y":2,"x":6},
+{"id":"faui06g","name":"faui06g","y":2,"x":7},
+{"id":"faui06h","name":"faui06h","y":2,"x":8},
+{"id":"faui06i","name":"faui06i","y":2,"x":9},
+{"id":"faui06j","name":"faui06j","y":3,"x":9},
+{"id":"faui06k","name":"faui06k","y":3,"x":8},
+{"id":"faui06l","name":"faui06l","y":3,"x":7},
+{"id":"faui06m","name":"faui06m","y":3,"x":6},
+{"id":"faui06n","name":"faui06n","y":3,"x":5},
+{"id":"faui06o","name":"faui06o","y":3,"x":4},
+{"id":"faui06p","name":"faui06p","y":3,"x":3},
+{"id":"faui06q","name":"faui06q","y":3,"x":2},
 {"id":"faui05h","name":"faui05h","y":5,"x":9},
 {"id":"faui05g","name":"faui05g","y":5,"x":8},
 {"id":"faui05f","name":"faui05f","y":5,"x":7},
@@ -69,46 +83,31 @@ map = {
 {"id":"faui08m","name":"faui08m","y":8,"x":5},
 {"id":"faui08n","name":"faui08n","y":8,"x":4},
 {"id":"faui08o","name":"faui08o","y":8,"x":3},
-{"id":"faui08p","name":"faui08p","y":8,"x":2},
-{"id":"Sunray0003ba0cc1f1","name":"Sunray","y":10,"x":2},
-{"id":"Sunray0003ba0cc33d","name":"Sunray","y":10,"x":9},
-//{"id":"Sunray0003ba0cc2bd","name":"Sunray","y":10,"x":},
-{"id":"Sunray0003ba0cbab7","name":"Sunray","y":10,"x":8},
-{"id":"Sunray0003ba0ccf2f","name":"Sunray","y":10,"x":5},
-//{"id":"Sunray0003ba0cbaab","name":"Sunray","y":10,"x":},
-{"id":"Sunray0003ba0cc382","name":"Sunray","y":10,"x":7},
-{"id":"Sunray0003ba2fda7d","name":"Sunray","y":10,"x":6},
-//{"id":"Sunray0003ba0cc31f","name":"Sunray","y":10,"x":},
-{"id":"Sunray0003ba0cc1e6","name":"Sunray","y":10,"x":4},
-{"id":"Sunray0003ba0cc1f9","name":"Sunray","y":10,"x":3}],
+{"id":"faui08p","name":"faui08p","y":8,"x":2}],
 //
 "cip2":[
-{"id":"Sunray0003babb8c61","name":"Sunray","y":12,"x":0},
-{"id":"Sunray0003babbac87","name":"Sunray","y":12,"x":1},
-//{"id":"Sunray080020c0e0e2","name":"Sunray","y":12,"x":2},//bildschirm kaputt
-{"id":"Sunray0003ba2fda71","name":"Sunray","y":12,"x":3},
-{"id":"Sunray0003babb8c76","name":"Sunray","y":12,"x":4},
-//{"id":"Sunray0003babbaa20","name":"Sunray","y":11,"x":1},//keine tastatur
-//{"id":"Sunray080020fda959","name":"Sunray","y":11,"x":2},//keine tastatur
-{"id":"Sunray0003babba9b8","name":"Sunray","y":11,"x":3},
-{"id":"Sunray0003babb8c5e","name":"Sunray","y":11,"x":4},
-//{"id":"Sunray080020c05d43","name":"Sunray","y":9,"x":0},//keine tastatur
-//{"id":"Sunray080020fe01f4","name":"Sunray","y":9,"x":1},//leerer platz
-//{"id":"Sunray0003ba0cc382","name":"Sunray","y":9,"x":2},//leerer platz
-//{"id":"Sunray080020c13210","name":"Sunray","y":9,"x":3},//tastatur kaputt
-//{"id":"Sunray0003ba3c18e7","name":"Sunray","y":9,"x":4},//bildschirm kaputt
-{"id":"Sunray0003babb8c71","name":"Sunray","y":12,"x":9},
-{"id":"Sunray080020fe0241","name":"Sunray","y":12,"x":8},
-{"id":"Sunray080020b05ee7","name":"Sunray","y":12,"x":7},
-{"id":"Sunray0003babba9f7","name":"Sunray","y":11,"x":7},
-{"id":"Sunray0003babba9b9","name":"Sunray","y":11,"x":8},
-{"id":"Sunray0003babb8c5b","name":"Sunray","y":11,"x":9},
-{"id":"Sunray00144fd18b19","name":"Sunray","y":9,"x":9},
-{"id":"Sunray00144fd18b2a","name":"Sunray","y":9,"x":8},
-{"id":"Sunray00144fd18aea","name":"Sunray","y":9,"x":7},
-{"id":"Sunray00144fd18b04","name":"Sunray","y":8,"x":9},
-{"id":"Sunray00144fd18b25","name":"Sunray","y":8,"x":8},
-{"id":"Sunray00144fd18b24","name":"Sunray","y":8,"x":7},
+{"id":"faui0fu","name":"faui0fu","y":12,"x":0},
+{"id":"faui0ft","name":"faui0ft","y":12,"x":1},
+{"id":"faui0fs","name":"faui0fs","y":12,"x":2},
+{"id":"faui0fr","name":"faui0fr","y":12,"x":3},
+{"id":"faui0fq","name":"faui0fq","y":12,"x":4},
+{"id":"faui0fp","name":"faui0fp","y":11,"x":1},
+{"id":"faui0fo","name":"faui0fo","y":11,"x":2},
+{"id":"faui0fn","name":"faui0fn","y":11,"x":3},
+{"id":"faui0fm","name":"faui0fm","y":11,"x":4},
+{"id":"faui0fj","name":"faui0fj","y":12,"x":9},
+{"id":"faui0fk","name":"faui0fk","y":12,"x":8},
+{"id":"faui0fl","name":"faui0fl","y":12,"x":7},
+{"id":"faui0fg","name":"faui0fg","y":11,"x":9},
+{"id":"faui0fh","name":"faui0fh","y":11,"x":8},
+{"id":"faui0fi","name":"faui0fi","y":11,"x":7},
+{"id":"faui0fa","name":"faui0fa","y":9,"x":9},
+{"id":"faui0fe","name":"faui0fe","y":9,"x":8},
+{"id":"faui0ff","name":"faui0ff","y":9,"x":7},
+{"id":"faui0fd","name":"faui0fd","y":8,"x":9},
+{"id":"faui0fb","name":"faui0fb","y":8,"x":8},
+{"id":"faui0fc","name":"faui0fc","y":8,"x":7},
+//
 {"id":"faui02a","name":"faui02a","y":2,"x":4},
 {"id":"faui02b","name":"faui02b","y":2,"x":3},
 {"id":"faui02c","name":"faui02c","y":2,"x":2},
@@ -129,11 +128,13 @@ map = {
 {"id":"faui02r","name":"faui02r","y":6,"x":2},
 {"id":"faui02s","name":"faui02s","y":6,"x":3},
 {"id":"faui02t","name":"faui02t","y":6,"x":4},
-{"id":"faui00u","name":"faui00u","y":8,"x":4},
-{"id":"faui02y","name":"faui02y","y":8,"x":3},
-{"id":"faui02w","name":"faui02w","y":8,"x":2},
-{"id":"faui02x","name":"faui02x","y":8,"x":1},
 {"id":"faui02u","name":"faui02u","y":8,"x":0},
+{"id":"faui02u","name":"faui02v","y":8,"x":1},
+{"id":"faui02w","name":"faui02w","y":8,"x":2},
+{"id":"faui02x","name":"faui02x","y":8,"x":3},
+{"id":"faui02y","name":"faui02y","y":8,"x":4},
+//
+{"id":"faui00u","name":"faui00u","y":9,"x":0},
 {"id":"faui00y","name":"faui00y","y":9,"x":1},
 {"id":"faui00x","name":"faui00x","y":9,"x":2},
 {"id":"faui00w","name":"faui00w","y":9,"x":3},
@@ -257,7 +258,7 @@ map = {
 {"id":"faui01l","name":"faui01j","y":9,"x":2},
 {"id":"faui01m","name":"faui01m","y":9,"x":1},
 {"id":"faui01n","name":"faui01n","y":9,"x":0},
-{"id":"Sunray0003babba89b","name":"Sunray","y":11,"x":5},
+//{"id":"Sunray0003babba89b","name":"Sunray","y":11,"x":5},
 {"id":"faui01o","name":"faui01o","y":11,"x":3},
 {"id":"faui01p","name":"faui01p","y":11,"x":2},
 {"id":"faui01q","name":"faui01q","y":11,"x":1},
