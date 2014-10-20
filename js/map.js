@@ -6,7 +6,7 @@ map = {
 	"gracip":{"position": 1,"offset":2 },
 	"stfucip":{"position": 1,"offset":2 },
 	"wincip":{"position": 3,"offset":4 },
-	"huber":{"position": 1,"offset":4 },
+	"huber":{"position": 1,"offset":6 },
 },
 //
 "diverse":[
@@ -264,23 +264,23 @@ map = {
 {"id":"faui01r","name":"faui01r","y":11,"x":0}],
 //
 "huber":[
-{"id":"faui04a","name":"faui04a","y":2,"x":0},
-{"id":"faui04d","name":"faui04d","y":0,"x":1},
+{"id":"faui04a","name":"faui04a","y":0,"x":0},
+{"id":"faui04d","name":"faui04d","y":2,"x":1},
 {"id":"faui04c","name":"faui04c","y":1,"x":1},
-{"id":"faui04b","name":"faui04b","y":2,"x":1},
-{"id":"faui04g","name":"faui04g","y":0,"x":3},
+{"id":"faui04b","name":"faui04b","y":0,"x":1},
+{"id":"faui04g","name":"faui04g","y":2,"x":3},
 {"id":"faui04f","name":"faui04f","y":1,"x":3},
-{"id":"faui04e","name":"faui04e","y":2,"x":3},
-{"id":"faui04j","name":"faui04j","y":0,"x":5},
+{"id":"faui04e","name":"faui04e","y":0,"x":3},
+{"id":"faui04j","name":"faui04j","y":2,"x":5},
 {"id":"faui04i","name":"faui04i","y":1,"x":5},
-{"id":"faui04h","name":"faui04h","y":2,"x":5},
-{"id":"faui04m","name":"faui04m","y":0,"x":7},
+{"id":"faui04h","name":"faui04h","y":0,"x":5},
+{"id":"faui04m","name":"faui04m","y":2,"x":7},
 {"id":"faui04l","name":"faui04l","y":1,"x":7},
-{"id":"faui04k","name":"faui04k","y":2,"x":7},
-{"id":"faui04p","name":"faui04p","y":0,"x":9},
+{"id":"faui04k","name":"faui04k","y":0,"x":7},
+{"id":"faui04p","name":"faui04p","y":2,"x":9},
 {"id":"faui04o","name":"faui04o","y":1,"x":9},
-{"id":"faui04n","name":"faui04n","y":2,"x":9},
-{"id":"faui04s","name":"faui04s","y":0,"x":11},
+{"id":"faui04n","name":"faui04n","y":0,"x":9},
+{"id":"faui04s","name":"faui04s","y":2,"x":11},
 {"id":"faui04r","name":"faui04r","y":1,"x":11},
-{"id":"faui04q","name":"faui04q","y":2,"x":11}]
+{"id":"faui04q","name":"faui04q","y":0,"x":11}]
 }
