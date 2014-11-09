@@ -397,7 +397,7 @@ function initSettings(){
 
 function colloquialNames(name){
 	names = {cip2:["CIP2", "02.151"],
-		 bibcip:["Bibcip", "02.153"],
+		 bibcip:["Bibcip", "02.135"],
 		 cip1:["CIP1", "01.155"],
 		 wincip:["Wincip", "01.153"],
 		 stfucip:["STFUcip", "00.153"],

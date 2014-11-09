@@ -28,7 +28,7 @@ map = {
 //
 "cip1":[
 {"id":"faui0ea","name":"faui0ea","y":0,"x":3},
-{"id":"faui0eb","name":"faui0eX","y":0,"x":4},
+{"id":"faui0eb","name":"faui0eb","y":0,"x":4},
 {"id":"faui0ec","name":"faui0ec","y":0,"x":5},
 {"id":"faui0ed","name":"faui0ed","y":0,"x":6},
 {"id":"faui0ee","name":"faui0ee","y":0,"x":7},
