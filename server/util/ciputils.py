@@ -1,6 +1,9 @@
+from functools import wraps
+
 from flask import request, abort
 
 def onlyFromIntranet(f, *args, **kwargs):
+	@wraps(f)
 	def fOnlyFromIntranet(*args, **kwargs):
 		if(isAllowed(request.remote_addr, False)):
 			return f(*args, **kwargs)
@@ -8,8 +11,9 @@ def onlyFromIntranet(f, *args, **kwargs):
 			abort(403)
 	
 	return fOnlyFromIntranet
-		
+
 def onlyFromCIP(f, *args, **kwargs):
+	@wraps(f)
 	def fOnlyFromCIP(*args, **kwargs):
 		if(isAllowed(request.remote_addr, True)):
 			return f(*args, **kwargs)
