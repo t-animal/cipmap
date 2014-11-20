@@ -7,7 +7,7 @@ import time
 import re
 import logging
 import datetime
-from subprocess import Popen, PIPE, STDOUT
+from subprocess import check_output, Popen, PIPE, STDOUT
 
 from flask import Flask, request, render_template, Response, json
 from util import ciputils
@@ -17,6 +17,7 @@ class CipmapServer(Flask):
 	def __init__(self, *args, **kwargs):
 		super(CipmapServer, self).__init__(*args, **kwargs)
 
+		self.tutorRequests = {}
 		self.optedInUsers = []
 		with open("data/optedInUsers") as f:
 			self.optedInUsers += f.read().splitlines()
@@ -150,14 +151,42 @@ def passOnCipData():
 
 			for (sunray, username) in [line.split(" ") for line in f.read().splitlines()]:
 				machines["Sunray"+sunray] = {"information": "Information on 1 users was last gathered {}s ago!".format(informationAge),
-							     "occupied": True,
-							     "personname": "" if username not in app.optedInUsers else username,
-							     "persongroup": ""}
+								 "occupied": True,
+								 "personname": "" if username not in app.optedInUsers else username,
+								 "persongroup": ""}
 
 	s.close()
 
 	app.logger.info("Connection from {} access granted, cipmap data transferred".format(request.remote_addr))
 	return Response("{}({});".format(request.args.get("callback", "default"), json.dumps(machines)), mimetype="application/json")
+
+@app.route("/tutorRequests/<lecture>", methods=["GET", "PUT", "DELETE"])
+@ciputils.onlyFromIntranet
+def requestTutor(lecture):
+	remote_hostname = check_output(["nslookup", request.remote_addr]).split("=")[1][1:].split(".")[0]
+
+	if request.method == "PUT" or "PUT" in request.args:
+		if not lecture in app.tutorRequests:
+			app.tutorRequests[lecture] = []
+
+		if not remote_hostname in [x["hostname"] for x in app.tutorRequests[lecture]]:
+			app.tutorRequests[lecture].append({"hostname":remote_hostname, "requestTime":datetime.datetime.utcnow()})
+
+	if request.method == "DELETE" or "DELETE" in request.args:
+		if lecture in app.tutorRequests:
+			for x in app.tutorRequests[lecture]:
+				if x["hostname"] == remote_hostname:
+					app.tutorRequests[lecture].remove(x)
+
+			if len(app.tutorRequests[lecture]) == 0:
+				del app.tutorRequests[lecture]
+
+	try:
+		returnVal = json.dumps({"requestList":app.tutorRequests[lecture], "currentHostname":remote_hostname})
+	except KeyError as e:
+		returnVal = json.dumps({"requestList":[], "currentHostname":remote_hostname})
+
+	return Response("{}({});".format(request.args.get("callback", "default"), returnVal), mimetype="application/json")
 
 
 @app.errorhandler(500)
