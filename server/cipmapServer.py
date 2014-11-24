@@ -9,13 +9,22 @@ import logging
 import datetime
 from subprocess import check_output, Popen, PIPE, STDOUT
 
-from flask import Flask, request, render_template, Response, json
+from flask import abort, Flask, request, render_template, Response, json
 from util import ciputils
+from util.univisutils import UNIVISRoom
 
 class CipmapServer(Flask):
 
 	def __init__(self, *args, **kwargs):
 		super(CipmapServer, self).__init__(*args, **kwargs)
+
+		self.rooms = {"02.151"  :UNIVISRoom("02.151a-113", "02.151b-113"),
+					  "02.135"  :UNIVISRoom("02.135.113"),
+					  "01.155"  :UNIVISRoom("01.155-113"),
+					  "01.153"  :UNIVISRoom("01.153-113"),
+					  "00.153"  :UNIVISRoom("00.153-113"),
+					  "00.156"  :UNIVISRoom("00.156-113"),
+					  "0.01-142":UNIVISRoom("0.01-142")}
 
 		self.tutorRequests = {}
 		self.optedInUsers = []
@@ -144,34 +153,53 @@ def passOnCipData():
 	app.logger.info("Connection from {} access granted, cipmap data transferred".format(request.remote_addr))
 	return Response("{}({});".format(request.args.get("callback", "default"), json.dumps(machines)), mimetype="application/json")
 
-@app.route("/tutorRequests/<lecture>", methods=["GET", "PUT", "DELETE"])
+@app.route("/tutorRequests/<requestedLecture>", methods=["GET", "PUT", "DELETE"])
 @ciputils.onlyFromIntranet
-def requestTutor(lecture):
+def requestTutor(requestedLecture):
+	requestedLecture = unicode(requestedLecture)
+
+	current = [lecture.name for room in app.rooms.values() for lecture in room.getCurrentLectures()]
+	if not requestedLecture in current:
+		return Response("{}({});".format(request.args.get("callback", "default"),
+							json.dumps({"error":"Momentan findet keine solche Uebung statt"})), mimetype="application/json")
+
 	remote_hostname = check_output(["nslookup", request.remote_addr]).split("=")[1][1:].split(".")[0]
 
-	if request.method == "PUT" or "PUT" in request.args:
-		if not lecture in app.tutorRequests:
-			app.tutorRequests[lecture] = []
+	#clean timed-out requests:
+	for lecture in app.tutorRequests:
+		if not lecture in current:
+			del app.tutorRequests[lecture]
 
-		if not remote_hostname in [x["hostname"] for x in app.tutorRequests[lecture]]:
-			app.tutorRequests[lecture].append({"hostname":remote_hostname, "requestTime":datetime.datetime.utcnow()})
+	if request.method == "PUT" or "PUT" in request.args:
+		if not requestedLecture in app.tutorRequests:
+			app.tutorRequests[requestedLecture] = []
+
+		if not remote_hostname in [x["hostname"] for x in app.tutorRequests[requestedLecture]]:
+			app.tutorRequests[requestedLecture].append({"hostname":remote_hostname, "requestTime":datetime.datetime.utcnow()})
 
 	if request.method == "DELETE" or "DELETE" in request.args:
-		if lecture in app.tutorRequests:
-			for x in app.tutorRequests[lecture]:
+		if requestedLecture in app.tutorRequests:
+			for x in app.tutorRequests[requestedLecture]:
 				if x["hostname"] == remote_hostname:
-					app.tutorRequests[lecture].remove(x)
+					app.tutorRequests[requestedLecture].remove(x)
 
-			if len(app.tutorRequests[lecture]) == 0:
-				del app.tutorRequests[lecture]
+			if len(app.tutorRequests[requestedLecture]) == 0:
+				del app.tutorRequests[requestedLecture]
 
 	try:
-		returnVal = json.dumps({"requestList":app.tutorRequests[lecture], "currentHostname":remote_hostname})
+		returnVal = json.dumps({"requestList":app.tutorRequests[requestedLecture], "currentHostname":remote_hostname})
 	except KeyError as e:
 		returnVal = json.dumps({"requestList":[], "currentHostname":remote_hostname})
 
+	app.logger.info("Connection from {} access granted, tutor requests transferred".format(request.remote_addr))
 	return Response("{}({});".format(request.args.get("callback", "default"), returnVal), mimetype="application/json")
 
+@app.route("/currentLectures/<room>")
+def getCurrentLectures(room):
+	if not room in app.rooms:
+		abort(404)
+
+	return  Response("{}({});".format(request.args.get("callback", "default"), json.dumps(list(set([lecture.name for lecture in app.rooms[room].getCurrentLectures()])))), mimetype="application/json")
 
 @app.errorhandler(500)
 def serverError(error):
