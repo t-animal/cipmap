@@ -139,22 +139,6 @@ def passOnCipData():
 
 		data = tokens[-1]+s.recv(1024)
 
-	#TODO:Filter global opt-out
-	#get information on sunrays independently from the cipmap: this is more reliable!
-	for filename in ["data/users.faui0sr0","data/users.faui0sr1","data/users.faui0sr2","data/users.faui01"]:
-		with open(filename) as f:
-			timestamp = f.readline()
-			if timestamp == "":
-				continue
-
-			informationAge = int(time.mktime(time.localtime())-int(timestamp))
-
-			for (sunray, username) in [line.split(" ") for line in f.read().splitlines()]:
-				machines["Sunray"+sunray] = {"information": "Information on 1 users was last gathered {}s ago!".format(informationAge),
-								 "occupied": True,
-								 "personname": "" if username not in app.optedInUsers else username,
-								 "persongroup": ""}
-
 	s.close()
 
 	app.logger.info("Connection from {} access granted, cipmap data transferred".format(request.remote_addr))
