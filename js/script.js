@@ -14,8 +14,7 @@ var names = {cip2:["CIP2", "02.151"],
 $.cookie.json = true;
 $.cookie.defaults.expires = 365;
 
-var lectureMode = false;
-var currentLecture = "";
+var lectureMode = $.cookie.lectureMode != undefined ? $.cookie.lectureMode : false;
 
 //Redraws the map when a cip button is clicked
 function redrawMap(element){
@@ -29,6 +28,7 @@ function redrawMap(element){
 }
 
 function getData(){
+	console.log(lectureMode);
 	if(lectureMode)
 		setAvailableLectures(true);
 	else
@@ -66,7 +66,7 @@ function setAvailableLectures(getData){
  		else {
  			$("#lectureSelector").children().remove();
  			for(i=0; i<data.length; i++){
- 				$("#lectureSelector").append("<option value='"+data[i]+"''>"+data[i]+"</option>");
+ 				$("#lectureSelector").append("<option value='"+data[i]+"' "+($.cookie('currentLecture')==data[i]?"selected='selected'":"")+">"+data[i]+"</option>");
  			}
 
  			if(getData)
@@ -83,6 +83,7 @@ function enterLectureMode(){
 
 	setAvailableLectures(true);
 
+	console.log("setting lecture mode to true");
 	lectureMode=true;
 }
 
@@ -92,6 +93,7 @@ function leaveLectureMode(){
 
 	$("#lectureModeButton").unbind("click").on("click", enterLectureMode).removeClass("current");
 
+	console.log("setting lecture mode to false");
 	lectureMode=false;
 	getData();
 }

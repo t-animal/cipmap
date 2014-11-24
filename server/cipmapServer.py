@@ -18,19 +18,6 @@ class CipmapServer(Flask):
 	def __init__(self, *args, **kwargs):
 		super(CipmapServer, self).__init__(*args, **kwargs)
 
-		self.rooms = {"02.151"  :UNIVISRoom("02.151a-113", "02.151b-113"),
-					  "02.135"  :UNIVISRoom("02.135.113"),
-					  "01.155"  :UNIVISRoom("01.155-113"),
-					  "01.153"  :UNIVISRoom("01.153-113"),
-					  "00.153"  :UNIVISRoom("00.153-113"),
-					  "00.156"  :UNIVISRoom("00.156-113"),
-					  "0.01-142":UNIVISRoom("0.01-142")}
-
-		self.tutorRequests = {}
-		self.optedInUsers = []
-		with open("data/optedInUsers") as f:
-			self.optedInUsers += f.read().splitlines()
-
 		formatter = logging.Formatter('%(asctime)s - %(name)-5.5s:%(levelname)-8s - %(message)s')
 		wlog = logging.getLogger("werkzeug")
 		alog = self.logger
@@ -57,9 +44,25 @@ class CipmapServer(Flask):
 
 		#log some info on stdout and after that only print warnings
 		self.logger.info("Program started")
+
+		self.logger.info("Start parsing univis")
+		self.rooms = {"02.151"  :UNIVISRoom("02.151a-113", "02.151b-113"),
+			  "02.135"  :UNIVISRoom("02.135.113"),
+			  "01.155"  :UNIVISRoom("01.155-113"),
+			  "01.153"  :UNIVISRoom("01.153-113"),
+			  "00.153"  :UNIVISRoom("00.153-113"),
+			  "00.156"  :UNIVISRoom("00.156-113"),
+			  "0.01-142":UNIVISRoom("0.01-142")}
+
+		self.tutorRequests = {}
+		self.optedInUsers = []
+		with open("data/optedInUsers") as f:
+			self.optedInUsers += f.read().splitlines()
+
 		self.logger.info("Opted-in users:"+str(self.optedInUsers))
 		self.logger.info("Only logging warnings to console after now")
 		streamHandler.setLevel(logging.WARNING)
+
 
 app = CipmapServer(__name__)
 
@@ -163,12 +166,16 @@ def requestTutor(requestedLecture):
 		return Response("{}({});".format(request.args.get("callback", "default"),
 							json.dumps({"error":"Momentan findet keine solche Uebung statt"})), mimetype="application/json")
 
-	remote_hostname = check_output(["nslookup", request.remote_addr]).split("=")[1][1:].split(".")[0]
-
 	#clean timed-out requests:
-	for lecture in app.tutorRequests:
-		if not lecture in current:
+	for lecture in app.tutorRequests.keys():
+		for tutorRequest in app.tutorRequests[lecture]:
+			if (datetime.datetime.utcnow()-tutorRequest["requestTime"]).total_seconds() > 90 * 60:
+				app.tutorRequests[lecture].remove(tutorRequest)
+
+		if len(app.tutorRequests[lecture]) == 0:
 			del app.tutorRequests[lecture]
+
+	remote_hostname = check_output(["nslookup", request.remote_addr]).split("=")[1][1:].split(".")[0]
 
 	if request.method == "PUT" or "PUT" in request.args:
 		if not requestedLecture in app.tutorRequests:
