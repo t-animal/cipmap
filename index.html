@@ -27,7 +27,7 @@
 		<a href="#gracip"><div class="leftpane cipButton" id="leftpane-gracip" onclick="redrawMap(this)" data-cip="gracip"><span class="name">00.156</span> <image src="load.png" class="loadimage" /></div></a>
 		<a href="#huber"><div class="leftpane cipButton" id="leftpane-huber" onclick="redrawMap(this)" data-cip="huber"><span class="name">0.01-142</span> <image src="load.png" class="loadimage" /></div></a>
 		<div id="tutorRequestPane" style="display:none">
-			<select class="leftpane" id="lectureSelector" name="foo" onchange="$.cookie('currentLecture', $(this).val());getTutorData()"><option>Currently no lectures</option></select>
+			<select class="leftpane" id="lectureSelector" name="foo" onchange="saveCurrentLecture();getTutorData()"><option>Currently no lectures</option></select>
 			<div class="leftpane" id="requestTutorButton" onclick="requestTutor()">Request tutor</div>
 			<div class="leftpane" id="requestTutorButton" onclick="cancelTutorRequest()">Cancel request</div>
 			<ul id="tutorRequestList">

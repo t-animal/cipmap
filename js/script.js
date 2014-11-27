@@ -2,6 +2,8 @@ var server = "ircbox.cs.fau.de";	//The server address
 var ipv4serveraddress = "131.188.30.49"; //The server ipv4 address (for opt in)
 var port = 1338;				//the server port
 
+var lectureMode;
+
 var names = {cip2:["CIP2", "02.151"],
 	 bibcip:["Bibcip", "02.135"],
 	 cip1:["CIP1", "01.155"],
@@ -13,8 +15,6 @@ var names = {cip2:["CIP2", "02.151"],
 
 $.cookie.json = true;
 $.cookie.defaults.expires = 365;
-
-var lectureMode = $.cookie.lectureMode != undefined ? $.cookie.lectureMode : false;
 
 /**
  * CipMap Mode
@@ -102,9 +102,16 @@ function setAvailableLectures(getData){
  			alert(data.error);
  		else {
  			$("#lectureSelector").children().remove();
+ 			if(data.length == 0){
+ 				alert("Momentan findet keine Übung in diesem Raum statt.")
+ 				leaveLectureMode();
+ 				return;
+ 			}
  			for(i=0; i<data.length; i++){
  				$("#lectureSelector").append("<option value='"+data[i]+"' "+($.cookie('currentLecture')==data[i]?"selected='selected'":"")+">"+data[i]+"</option>");
  			}
+
+ 			saveCurrentLecture();
 
  			if(getData)
  				getTutorData()
@@ -122,7 +129,7 @@ function enterLectureMode(){
 	setAvailableLectures(true);
 
 	lectureMode=true;
-	$.cookie.lectureMode = true;
+	$.cookie('lectureMode', true);
 }
 
 //removes request information and hides lecture mode buttons
@@ -133,7 +140,7 @@ function leaveLectureMode(){
 	$("#lectureModeButton").unbind("click").on("click", enterLectureMode).removeClass("current");
 
 	lectureMode=false;
-	$.cookie.lectureMode = false;
+	$.cookie('lectureMode', false);
 
 	getData();
 }
@@ -152,7 +159,9 @@ function getTutorData(){
 
 //sends a request for a tutor and draws tutordata afterwards
 function requestTutor(){
-	console.log("http://"+server+":"+port+"/tutorRequests/"+$("#lectureSelector").val()+"?PUT=true")
+	if($("#lectureSelector").val() == undefined)
+		return
+
 	$.ajax("http://"+server+":"+port+"/tutorRequests/"+$("#lectureSelector").val()+"?PUT=true",{
 		dataType:"jsonp",
 		type: "PUT",
@@ -210,7 +219,11 @@ function decorateTutorData(data){
 	ageTimer = window.setInterval("increaseTimes()",1000);
 }
 
-
+function saveCurrentLecture(){
+	if($("#lectureSelector").val()){
+		$.cookie('currentLecture', $("#lectureSelector").val());
+	}
+}
 /**
  * Map related functions
  */
@@ -218,12 +231,11 @@ function decorateTutorData(data){
 //Draws the map on first load
 function drawMapFirst(){
 	var hashMap = location.hash.substr(1);
-	lectureMode = location.search.indexOf("lectureMode")!=-1;
+	lectureMode = $.cookie('lectureMode') != undefined ? $.cookie('lectureMode') : location.search.indexOf("lectureMode")!=-1;
 
 	if(lectureMode){
 		lectureArg = location.search.split("lectureMode=")[1]
-		currentLecture = lectureArg?lectureArg.split("&")[0]:"";
-		console.log(currentLecture);
+		currentLecture = lectureArg ? lectureArg.split("&")[0] : ($.cookie('currentLecture') != undefined ? $.cookie('currentLecture') : "");
 	}
 
 	//if there is a valid map saved in the hashtag
@@ -512,7 +524,6 @@ function redrawMap(element){
 }
 
 function getData(){
-	console.log(lectureMode);
 	if(lectureMode)
 		setAvailableLectures(true);
 	else
