@@ -9,14 +9,20 @@ class UNIVISRoom():
 	_BASE_URL = "https://univis.uni-erlangen.de/prg?search=lectures&show=xml&room="
 
 	def __init__(self, *roomNos):
-		self.lectures = []
+		self.lectures = set()
 
 		for roomNo in roomNos:
 			f = urllib2.urlopen(self._BASE_URL+roomNo)
-			self._parsexml(f)
+			self._parsexml(f, roomNo)
 
-	def _parsexml(self, xml):
+	def _parsexml(self, xml, roomNo):
 		bs = BeautifulSoup(xml)
+
+		roomKey = None
+		#first find this room's key
+		for room in bs.univis.find_all("room", recursive=False):
+			if room.short.text == roomNo:
+				roomKey = room['key']
 
 		for lecture in bs.find_all("lecture"):
 			for term in lecture.find_all("term"):
@@ -24,11 +30,15 @@ class UNIVISRoom():
 				if not term.repeat.text[0:2] == "w1":
 					continue
 
+				#ignore term if not in this room
+				if term.room == None or term.room.univisref["key"] == roomKey:
+					continue
+
 				for weekday in term.repeat.text[2:].split(","):
 					if term.starttime == None or term.endtime == None:
 						continue
 
-					self.lectures.append(UNIVISLectureTerm(lecture.short.text, weekday,
+					self.lectures.add(UNIVISLectureTerm(unicode(lecture.short.text), weekday,
 						                                    term.starttime.text, term.endtime.text))
 
 	def getCurrentLectures(self):
@@ -50,14 +60,26 @@ class UNIVISLectureTerm():
 		self.starttime = datetime.time(*map(int, starttime.split(":")))
 		self.endtime = datetime.time(*map(int, endtime.split(":")))
 
-	def __str__(self):
+	def __hash__(self):
+		return hash(self.__repr__())
+
+	def __eq__(self, other):
+		return unicode(self) == unicode(other)
+
+	def __repr__(self):
+		weekdays = ["Mon", "Die", "Mit", "Don", "Fre", "Sam", "Son"]
+		return u"{} {}: {}-{}".format(self.name, self.day, self.starttime, self.endtime)
+
+	def __unicode__(self):
 		weekdays = ["Mon", "Die", "Mit", "Don", "Fre", "Sam", "Son"]
 		return u"{} {}: {}-{}".format(self.name, weekdays[self.day], self.starttime, self.endtime)
 
-	def __repr__(self):
-		return u"{} {}: {}-{}".format(self.name, self.day, self.starttime, self.endtime)
-
 if __name__ == "__main__":
-	r = UNIVISRoom("02.151a-113", "02.151b-113")
+	r = UNIVISRoom("02.151a-113")
 
-	print unicode(r.getCurrentLectures())
+	# print map(lambda x: type(str(x.name)), r.lectures)
+	for lecture in r.lectures:
+		print unicode(lecture)
+
+	#for lecture in r.getCurrentLectures():
+#		print unicode(lecture)
