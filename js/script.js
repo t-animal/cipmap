@@ -16,23 +16,55 @@ $.cookie.defaults.expires = 365;
 
 var lectureMode = $.cookie.lectureMode != undefined ? $.cookie.lectureMode : false;
 
-//Redraws the map when a cip button is clicked
-function redrawMap(element){
-	fadeOutAndRemove(".kiste, .door");
-	window.setTimeout("drawMap(\""+$(element).attr("data-cip")+"\")", 400);
+/**
+ * CipMap Mode
+ */
 
-	$(".current").removeClass("current");
-	$(element).addClass("current");
+//Sets the machines' state (free, occupied, no information) and starts the ageTimer
+var ageTimer;
+function decorate(data){
+	$.each($(".kiste"), function (index, value) {
+		$(value).removeClass("free occupied");
 
-	location.hash=$(element).attr("data-cip");
-}
+		occ = eval("data."+$(value).attr("id"));
 
-function getData(){
-	console.log(lectureMode);
-	if(lectureMode)
-		setAvailableLectures(true);
-	else
-		getCipmapData();
+		//No information
+		if(occ == undefined){
+			$(value).addClass("free");
+			return;
+		}
+
+		secs = parseTime(occ.information);
+
+		//Server has not updated its information for a long time
+		if(occ.information.indexOf("probably outdated") != -1){
+			$(value).children(".innerText").html("Cipmap ser&shy;ver in&shy;oper&shy;able since <span class=\"ageTimer\" data-seconds=\""+secs+"\" title=\"Server said: "+occ.information+"\"></span>");
+			return;
+		}
+
+		if(occ.occupied){
+			$(value).addClass("occupied");
+
+			if(occ.personname != ""){
+				$(value).children(".innerText").html("User: <acronym title=\""+occ.persongroup+"\">"+occ.personname+"</acronym><br/ >Last update: <span class=\"ageTimer\" data-seconds=\""+secs+"\" title=\"Server said: "+occ.information+"\"></span>");
+			}else{
+				$(value).children(".innerText").html("User: <acronym title=\"Der Nutzer hat der Veröffentlichung seines Nutzernamens nicht zugestimmt.\">N/A</acronym><br/ >Last update: <span class=\"ageTimer\" data-seconds=\""+secs+"\" title=\"Server said: "+occ.information+"\"></span>");
+			}
+		}else{
+			$(value).addClass("free");
+			$(value).children(".innerText").html("");
+
+			//The server has not reached the machine for some time
+			if(occ.information.indexOf("never reached") != -1){
+				$(value).children(".innerText").html("Pro&shy;ba&shy;bly turned off<br / >Last update: <span class=\"ageTimer\" data-seconds=\""+secs+"\" title=\"Server said: "+secs+" "+occ.information+"\"></span>");
+
+			}
+		}
+	});
+	//Increase and display the times now and once every second
+	increaseTimes();
+	window.clearInterval(ageTimer);
+	ageTimer = window.setInterval("increaseTimes()",1000);
 }
 
 //gets the data from the server and calls decorate afterwards
@@ -50,6 +82,11 @@ function getCipmapData(){
 		});
 }
 
+/**
+ * Lecture Mode
+ */
+
+//gets currently available lectures in this room and optionally getsData afterwards
 function setAvailableLectures(getData){
 	getData = typeof getData !== 'undefined' ? getData : false;
 
@@ -75,6 +112,7 @@ function setAvailableLectures(getData){
  	});
 }
 
+//removes state information and shows lecture mode buttons
 function enterLectureMode(){
 	$(".cipButton").not(".current").parent('a').hide();
 	$("#tutorRequestPane").show();
@@ -83,21 +121,24 @@ function enterLectureMode(){
 
 	setAvailableLectures(true);
 
-	console.log("setting lecture mode to true");
 	lectureMode=true;
+	$.cookie.lectureMode = true;
 }
 
+//removes request information and hides lecture mode buttons
 function leaveLectureMode(){
 	$(".cipButton").not(".current").parent('a').show();
 	$("#tutorRequestPane").hide();
 
 	$("#lectureModeButton").unbind("click").on("click", enterLectureMode).removeClass("current");
 
-	console.log("setting lecture mode to false");
 	lectureMode=false;
+	$.cookie.lectureMode = false;
+
 	getData();
 }
 
+//loads tutor Data and draws it afterwards
 function getTutorData(){
 	$.ajax("http://"+server+":"+port+"/tutorRequests/"+$("#lectureSelector").val(),{
 		dataType:"jsonp",
@@ -109,6 +150,7 @@ function getTutorData(){
 		});
 }
 
+//sends a request for a tutor and draws tutordata afterwards
 function requestTutor(){
 	console.log("http://"+server+":"+port+"/tutorRequests/"+$("#lectureSelector").val()+"?PUT=true")
 	$.ajax("http://"+server+":"+port+"/tutorRequests/"+$("#lectureSelector").val()+"?PUT=true",{
@@ -122,6 +164,7 @@ function requestTutor(){
 	});
 }
 
+//cancels a request for a tutor and draws tutordata afterwards
 function cancelTutorRequest(){
 	$.ajax("http://"+server+":"+port+"/tutorRequests/"+$("#lectureSelector").val()+"?DELETE=true",{
 		dataType:"jsonp",
@@ -137,6 +180,7 @@ function cancelTutorRequest(){
 	});
 }
 
+//draws tutor data
 function decorateTutorData(data){
 	$.each($(".kiste"), function (index, value) {
 		$(value).removeClass("free occupied");
@@ -164,6 +208,38 @@ function decorateTutorData(data){
 	increaseTimes();
 	window.clearInterval(ageTimer);
 	ageTimer = window.setInterval("increaseTimes()",1000);
+}
+
+
+/**
+ * Map related functions
+ */
+
+//Draws the map on first load
+function drawMapFirst(){
+	var hashMap = location.hash.substr(1);
+	lectureMode = location.search.indexOf("lectureMode")!=-1;
+
+	if(lectureMode){
+		lectureArg = location.search.split("lectureMode=")[1]
+		currentLecture = lectureArg?lectureArg.split("&")[0]:"";
+		console.log(currentLecture);
+	}
+
+	//if there is a valid map saved in the hashtag
+	$("#leftpane-"+hashMap).addClass("current");
+	if(hashMap != "" && eval("map."+hashMap)){
+		drawMap(hashMap);
+	}else{
+		$("#leftpane-cip2").addClass("current");
+		drawMap("cip2");
+	}
+
+	if(lectureMode){
+		enterLectureMode();
+	}
+
+	window.setTimeout("keepUpdated()",1000*60);
 }
 
 //Draws the map
@@ -322,86 +398,11 @@ function drawMap(cip) {
 	});
 }
 
-//Draws the map on first load
-function drawMapFirst(){
-	var hashMap = location.hash.substr(1);
-	lectureMode = location.search.indexOf("lectureMode")!=-1;
-
-	if(lectureMode){
-		lectureArg = location.search.split("lectureMode=")[1]
-		currentLecture = lectureArg?lectureArg.split("&")[0]:"";
-		console.log(currentLecture);
-	}
-
-	//if there is a valid map saved in the hashtag
-	$("#leftpane-"+hashMap).addClass("current");
-	if(hashMap != "" && eval("map."+hashMap)){
-		drawMap(hashMap);
-	}else{
-		$("#leftpane-cip2").addClass("current");
-		drawMap("cip2");
-	}
-
-	if(lectureMode){
-		enterLectureMode();
-	}
-
-	window.setTimeout("keepUpdated()",1000*60);
-}
-
 function keepUpdated(){
 	if($("#keepUpdated").prop("checked")){
 		getData();
 	}
 	window.setTimeout("keepUpdated()",1000*60);
-}
-
-//Sets the machines' state (free, occupied, no information) and starts the ageTimer
-var ageTimer;
-function decorate(data){
-	$.each($(".kiste"), function (index, value) {
-		$(value).removeClass("free occupied");
-
-		occ = eval("data."+$(value).attr("id"));
-
-		//No information or a sunray
-		if(occ == undefined){
-			if($(value).children(".name").html() == "Sunray")
-				$(value).addClass("free");
-			return;
-		}
-
-		secs = parseTime(occ.information);
-
-		//Server has not updated its information for a long time
-		if(occ.information.indexOf("probably outdated") != -1){
-			$(value).children(".innerText").html("Cipmap ser&shy;ver in&shy;oper&shy;able since <span class=\"ageTimer\" data-seconds=\""+secs+"\" title=\"Server said: "+occ.information+"\"></span>");
-			return;
-		}
-
-		if(occ.occupied){
-			$(value).addClass("occupied");
-
-			if(occ.personname != ""){
-				$(value).children(".innerText").html("User: <acronym title=\""+occ.persongroup+"\">"+occ.personname+"</acronym><br/ >Last update: <span class=\"ageTimer\" data-seconds=\""+secs+"\" title=\"Server said: "+occ.information+"\"></span>");
-			}else{
-				$(value).children(".innerText").html("User: <acronym title=\"Der Nutzer hat der Veröffentlichung seines Nutzernamens nicht zugestimmt.\">N/A</acronym><br/ >Last update: <span class=\"ageTimer\" data-seconds=\""+secs+"\" title=\"Server said: "+occ.information+"\"></span>");
-			}
-		}else{
-			$(value).addClass("free");
-			$(value).children(".innerText").html("");
-
-			//The server has not reached the machine for some time
-			if(occ.information.indexOf("never reached") != -1){
-				$(value).children(".innerText").html("Pro&shy;ba&shy;bly turned off<br / >Last update: <span class=\"ageTimer\" data-seconds=\""+secs+"\" title=\"Server said: "+secs+" "+occ.information+"\"></span>");
-
-			}
-		}
-	});
-	//Increase and display the times now and once every second
-	increaseTimes();
-	window.clearInterval(ageTimer);
-	ageTimer = window.setInterval("increaseTimes()",1000);
 }
 
 //Calculates a human readable time and displays it in all .ageTimer elements
@@ -496,8 +497,27 @@ function submitOptIn(){
 }
 
 /*
- * Some simple helper stuff
+ * Some helper stuff
  */
+
+//Redraws the map when a cip button is clicked
+function redrawMap(element){
+	fadeOutAndRemove(".kiste, .door");
+	window.setTimeout("drawMap(\""+$(element).attr("data-cip")+"\")", 400);
+
+	$(".current").removeClass("current");
+	$(element).addClass("current");
+
+	location.hash=$(element).attr("data-cip");
+}
+
+function getData(){
+	console.log(lectureMode);
+	if(lectureMode)
+		setAvailableLectures(true);
+	else
+		getCipmapData();
+}
 
 //Fades an element out and then removes it from the DOM
 function fadeOutAndRemove(elem){
