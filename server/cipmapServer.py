@@ -175,7 +175,11 @@ def requestTutor(requestedLecture):
 		if len(app.tutorRequests[lecture]) == 0:
 			del app.tutorRequests[lecture]
 
-	remote_hostname = check_output(["nslookup", request.remote_addr]).split("=")[1][1:].split(".")[0]
+	remoteAddress = request.remote_addr
+	if ":" in request.remote_addr and "." in request.remote_addr:
+		#tunneled ipv4, use only ipv4 part
+		remoteAddress = remoteAddress[remoteAddress.rindex(":")+1:]
+	remote_hostname = check_output(["nslookup", remoteAddress]).split("=")[1][1:].split(".")[0]
 
 	if request.method == "PUT" or "PUT" in request.args:
 		if not requestedLecture in app.tutorRequests:
