@@ -457,8 +457,10 @@ function rotateMap(){
 	door = eval("map.doors."+$(".leftpane.current").attr("data-cip"));
 	if(door){
 		//reset basically everything, so that no weird things happen
-		foo = document.getElementById("mainContentContainer").scrollTop;
+		var topOffset  = document.getElementById("mainContentContainer").scrollTop;
+		var leftOffset = document.getElementById("mainContentContainer").scrollLeft;
 		document.getElementById("mainContentContainer").scrollTop=0;
+		document.getElementById("mainContentContainer").scrollLeft=0;
 		$("#mainContent").css({top:0,left:0});
 
 		$(".kiste").css("transform", "rotate("+90*(desiredPosition-door.position)+"deg)");
@@ -469,7 +471,8 @@ function rotateMap(){
 
 		after = $("#mainContent").position();
 		$("#mainContent").css({top:-after.top,left:-after.left});
-		document.getElementById("mainContentContainer").scrollTop=foo;
+		document.getElementById("mainContentContainer").scrollTop  = topOffset;
+		document.getElementById("mainContentContainer").scrollLeft = leftOffset;
 
 		//save the setting
 		$.cookie("rotate_"+$(".leftpane.current").attr("data-cip"), desiredPosition);
