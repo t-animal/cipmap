@@ -4,10 +4,10 @@
 		<title>CipMap</title>
 		<meta name="description" lang="de" content="Die CIPMap stellt die Computerräume (CIP) der FAU Erlangen grafisch dar und zeigt, welche Rechner belegt sind. Daten sind nur von innerhalb der Friedrich-Alexander-Universität sichtbar." />
 		<meta name="description" lang="en" content="The CIPMap displays the computer pools (CIP) of the FAU Erlangen graphically and shows, which computers are occupied. Data is only visible from inside the network of the Friedrich Alexander University." />
-		
+
 		<link rel="stylesheet" type="text/css" href="style.css" />
 		<link rel="stylesheet" type="text/css" href="socialshareprivacy.css" />
-	
+
 		<script type="text/javascript" src="js/jquery-1.10.2.js"></script>
 		<script type="text/javascript" src="js/jquery.cookie.js"></script>
 		<script type="text/javascript" src="js/social_bookmarks.js"></script>
@@ -34,51 +34,67 @@
 		</script>
 	</div>
 
-<div style="padding-left:10px; float:right; width:90%; height:100%;">
-	<div style="border:1px solid black; float:right; width:100%; height:100%;overflow:auto;position:relative;padding:10px" id="mainContent">
-		<h1>Probably frequently asked questions</h1>
-		<h2>How can I contact you?</h2>
-		Please send an e-mail to &#116&#105&#108&#109&#97&#110&#45&#99&#105&#112&#109&#97&#112&#91&#97&#116&#93&#116&#45&#97&#110&#105&#109&#97&#108&#91&#100&#111&#116&#93&#100&#101&#46.
-		
-		<h2>Where do you get your data from?</h2>
-		I use the public information which every multi user system provides. They are collected by a programm called 
-		cipmap server that prints it on faui02:1338.
-		
-		<h2>What does "User: N/A" mean?</h2>
-		This message means that there is a user logged in who has not opted in to displaying his username on the site. See below for
-		information how to opt out globally.
-		
-		<h2>What do the times mean?</h2>
-		The server tells me when it last reached the host or when it last checked wether a user was logged in. I round this
-		time to minutes and show it on the website. Displaying seconds was too unresting for my taste ;).
-		
-		<h2>What do the colors mean?</h2>
-		Duh. Green means the pc/workstation is unoccupied, red means it is not. Gray means there are currently no information for this machine.
-		
-		<h2>Can I access the site from outside the university?</h2>
-		Sure. All you need is a <a href="http://wwwcip/documentation/services/index.en.html">VPN connection</a> to the university network.
-		If the CIP admins are OK with it I might offer a password-protected version of this site outside the university network in the future.
-		
-		<h2>How can I make my username show up on the website?</h2>
-		Please try the opt-in system. No promises that everything works already, but go ahead and give it a try.
-		
-		<h2>I don't want my name to show up there or anywhere else!</h2>
-		When it comes to this website you do not have to do anything: it is an opt-in system, which means you only have
-		to act if you want your name to show up. All names are filtered before they are sent to the users.<br />
-		I'm not responsible for the cipmap server. However, you can opt-out from the data collection by touching a file
-		with your username in /proj/cipmap: <span style="font-family:monospace">$> touch /proj/cipmap/`whoami`</span>. 
-		Please note that even though you may have opted out from the cipmap, there is still plenty of information
-		available for someone to find out if and where you are logged in. There is no way to prevent it.
-		
-		<h2>I've never heard of these names for the CIPs. What do they mean?</h2>
-		CIP1 and CIP2 refer to the big CIPs on the 1st and 2nd floor respectively. The Bibcip ows its name to the fact
-		that there once was a libary ("Bibliothek") where it is now (it's the other CIP on the 2nd floor).
-		In the STFU-Cip there is no talking allowed and in the GRa-Cip I had GRa-Classes once ;) (both are on the ground floor).
-		On the machines in the Wincip runs Windows (it's on the first floor, too). The Huber-Cip is in Casa Huber.
-		
-		<h2>Hey, I like this site! Do you have any other cool sites?</h2>
-		Jupp. Check out <a href="http://28h.t-animal.de">28h.t-animal.de</a> :)
+	<div style="padding-left:10px; float:right; width:90%; height:100%;">
+		<div style="border:1px solid black; float:right; width:100%; height:100%;overflow:auto;position:relative;padding:10px" id="mainContent">
+			<h1>Probably frequently asked questions</h1>
+			<h2>How can I contact you?</h2>
+			Please send an e-mail to &#116&#105&#108&#109&#97&#110&#45&#99&#105&#112&#109&#97&#112&#91&#97&#116&#93&#116&#45&#97&#110&#105&#109&#97&#108&#91&#100&#111&#116&#93&#100&#101&#46.
+
+			<h2>Where do you get your data from?</h2>
+			I use the public information which every multi user system provides. They are collected by a programm called
+			cipmap server that prints it on faui02:1338.
+
+			<h2>What does "User: N/A" mean?</h2>
+			This message means that there is a user logged in who has not opted in to displaying his username on the site. See below for
+			information how to opt out globally.
+
+			<h2>What do the times mean?</h2>
+			The server tells me when it last reached the host or when it last checked wether a user was logged in. I round this
+			time to minutes and show it on the website. Displaying seconds was too unresting for my taste ;).
+
+			<h2>What do the colors mean?</h2>
+			Duh. Green means the pc/workstation is unoccupied, red means it is not. Gray means there are currently no information for this machine.
+
+			<h2>Can I access the site from outside the university?</h2>
+			Sure. All you need is a <a href="http://wwwcip/documentation/services/index.en.html">VPN connection</a> to the university network.
+			If the CIP admins are OK with it I might offer a password-protected version of this site outside the university network in the future.
+
+			<h2>How can I make my username show up on the website?</h2>
+			Please try the opt-in system. No promises that everything works already, but go ahead and give it a try.
+
+			<h2>I don't want my name to show up there or anywhere else!</h2>
+			When it comes to this website you do not have to do anything: it is an opt-in system, which means you only have
+			to act if you want your name to show up. All names are filtered before they are sent to the users.<br />
+			I'm not responsible for the cipmap server. However, you can opt-out from the data collection by touching a file
+			with your username in /proj/cipmap: <span style="font-family:monospace">$> touch /proj/cipmap/`whoami`</span>.
+			Please note that even though you may have opted out from the cipmap, there is still plenty of information
+			available for someone to find out if and where you are logged in. There is no way to prevent it.
+
+			<h2>I've never heard of these names for the CIPs. What do they mean?</h2>
+			CIP1 and CIP2 refer to the big CIPs on the 1st and 2nd floor respectively. The Bibcip ows its name to the fact
+			that there once was a libary ("Bibliothek") where it is now (it's the other CIP on the 2nd floor).
+			In the STFU-Cip there is no talking allowed and in the GRa-Cip I had GRa-Classes once ;) (both are on the ground floor).
+			On the machines in the Wincip runs Windows (it's on the first floor, too). The Huber-Cip is in Casa Huber.
+
+			<h2>Hey, I like this site! Do you have any other cool sites?</h2>
+			Jupp. Check out <a href="http://28h.t-animal.de">28h.t-animal.de</a> :)
+		</div>
 	</div>
-</div>
+	<!-- Piwik -->
+	<script type="text/javascript">
+	  var _paq = _paq || [];
+	  _paq.push(['trackPageView']);
+	  _paq.push(['enableLinkTracking']);
+	  (function() {
+	    var u="//piwik.t-animal.de/";
+	    _paq.push(['setTrackerUrl', u+'piwik.php']);
+	    _paq.push(['setSiteId', 3]);
+	    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+	    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+	  })();
+	</script>
+	<noscript><p><img src="//piwik.t-animal.de/piwik.php?idsite=3" style="border:0;" alt="" /></p></noscript>
+	<!-- End Piwik Code -->
+
 </body>
 </html>
