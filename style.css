@@ -45,7 +45,7 @@ h1 {
 .leftpane.current .loadimage{
 	visibility:visible;
 }
-		
+
 .leftpane.first{
 	margin-top:auto;
 }
@@ -68,6 +68,14 @@ h1 {
 }
 .kiste.free{
 	background-color:#A0F0A0;
+}
+
+.kiste.nextTutorRequest {
+	background-color: #F05050;
+}
+
+.kiste.currentMachine {
+	border-width:3px;
 }
 
 .kiste .name{
@@ -117,7 +125,7 @@ a {
 	transform:scale(-1,-1);
 }
 
-#mainContent a { 
+#mainContent a {
 	color:darkblue;
 	padding:10px;
 }

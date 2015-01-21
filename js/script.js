@@ -139,6 +139,8 @@ function leaveLectureMode(){
 
 	$("#lectureModeButton").unbind("click").on("click", enterLectureMode).removeClass("current");
 
+	$(".kiste").removeClass("free occupied nextTutorRequest currentMachine");
+
 	lectureMode=false;
 	$.cookie('lectureMode', false);
 
@@ -191,11 +193,12 @@ function cancelTutorRequest(){
 
 //draws tutor data
 function decorateTutorData(data){
-	$.each($(".kiste"), function (index, value) {
-		$(value).removeClass("free occupied");
-	});
+	$(".kiste").removeClass("free occupied nextTutorRequest currentMachine");
+
 	$(".kiste").children(".innerText").html("");
-	$("#tutorRequestList").children().remove();
+	$("#tutorRequestList").children().remove()
+
+	$("#"+data.currentHostname).addClass("currentMachine");
 
 	$.each(data.requestList, function(index, value){
 		requestTime = parseInt((new Date()-Date.parse(value.requestTime))/1000);
@@ -203,6 +206,8 @@ function decorateTutorData(data){
 		kiste = $("#"+value.hostname);
 		if(kiste.get(0) != undefined){
 			kiste.addClass("occupied");
+			if(index == 0)
+				kiste.addClass("nextTutorRequest");
 			kiste.children(".innerText").html("Tutor request <span class=\"ageTimer\" data-seconds=\""+requestTime+"\" title=\"Tutor request "+requestTime+" ago\"></span> ago");
 
 			$("#tutorRequestList").append("<li><b>"+(value.hostname==data.currentHostname?"You":value.hostname)+"</b> <span class=\"ageTimer\" data-seconds=\""+requestTime+"\" title=\"Tutor request "+requestTime+"s ago\"></span> ago</li>");
