@@ -26,6 +26,9 @@ class UNIVISRoom():
 
 		for lecture in bs.find_all("lecture"):
 			for term in lecture.find_all("term"):
+				if term == None or term.repeat == None:
+					continue
+
 				#support only weekly terms
 				if not term.repeat.text[0:2] == "w1":
 					continue
@@ -68,18 +71,20 @@ class UNIVISLectureTerm():
 
 	def __repr__(self):
 		weekdays = ["Mon", "Die", "Mit", "Don", "Fre", "Sam", "Son"]
-		return u"{} {}: {}-{}".format(self.name, self.day, self.starttime, self.endtime)
+		return u"{} {}: {}-{}".format(self.name, weekdays[self.day], self.starttime, self.endtime)
 
 	def __unicode__(self):
-		weekdays = ["Mon", "Die", "Mit", "Don", "Fre", "Sam", "Son"]
+		weekdays = ["Son", "Mon", "Die", "Mit", "Don", "Fre", "Sam", "Son"]
 		return u"{} {}: {}-{}".format(self.name, weekdays[self.day], self.starttime, self.endtime)
 
 if __name__ == "__main__":
-	r = UNIVISRoom("02.151a-113")
+	r = UNIVISRoom("02.151a-113", "02.151b-113")
 
 	# print map(lambda x: type(str(x.name)), r.lectures)
 	for lecture in r.lectures:
 		print unicode(lecture)
+	
+	print "Current "+unicode(r.getCurrentLectures())
 
 	#for lecture in r.getCurrentLectures():
 #		print unicode(lecture)
