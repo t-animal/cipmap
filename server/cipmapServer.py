@@ -224,4 +224,4 @@ def refuseConnection(error):
 
 
 if __name__ == "__main__":
-	app.run(host='::', port=1338)
+	app.run(host='::', port=1338, threaded=True)
