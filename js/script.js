@@ -24,7 +24,7 @@ $.cookie.defaults.expires = 365;
 var ageTimer;
 function decorate(data){
 	$.each($(".kiste"), function (index, value) {
-		$(value).removeClass("free occupied");
+		$(value).removeClass("free occupied idle");
 
 		occ = eval("data."+$(value).attr("id"));
 
@@ -45,11 +45,21 @@ function decorate(data){
 		if(occ.occupied){
 			$(value).addClass("occupied");
 
+			var boxContent = "";
+
 			if(occ.personname != ""){
-				$(value).children(".innerText").html("User: <acronym title=\""+occ.persongroup+"\">"+occ.personname+"</acronym><br/ >Last update: <span class=\"ageTimer\" data-seconds=\""+secs+"\" title=\"Server said: "+occ.information+"\"></span>");
+				boxContent += "User: <acronym title=\""+occ.persongroup+"\">"+occ.personname+"</acronym><br />";
 			}else{
-				$(value).children(".innerText").html("User: <acronym title=\"Der Nutzer hat der Veröffentlichung seines Nutzernamens nicht zugestimmt.\">N/A</acronym><br/ >Last update: <span class=\"ageTimer\" data-seconds=\""+secs+"\" title=\"Server said: "+occ.information+"\"></span>");
+				boxContent += "User: <acronym title=\"Der Nutzer hat der Veröffentlichung seines Nutzernamens nicht zugestimmt.\">N/A</acronym><br/ >";
 			}
+
+			if(occ.idletime != 0){
+				boxContent += "Inactive: <span class=\"ageTimer\" data-seconds=\""+occ.idletime+"\"></span><br />";
+				$(value).addClass("idle");
+			}
+
+			boxContent += "Data age: <span class=\"ageTimer\" data-seconds=\""+secs+"\" title=\"Server said: "+occ.information+"\"></span>";
+			$(value).children(".innerText").html(boxContent);
 		}else{
 			$(value).addClass("free");
 			$(value).children(".innerText").html("");
@@ -193,7 +203,7 @@ function cancelTutorRequest(){
 
 //draws tutor data
 function decorateTutorData(data){
-	$(".kiste").removeClass("free occupied nextTutorRequest currentMachine");
+	$(".kiste").removeClass("free occupied idle nextTutorRequest currentMachine");
 
 	$(".kiste").children(".innerText").html("");
 	$("#tutorRequestList").children().remove()

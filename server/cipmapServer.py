@@ -139,7 +139,7 @@ def passOnCipData():
 
 		for token in tokens[:-1]:
 			machineRegex = re.compile(r"(?P<hostname>[\w\d]+)\.informatik\.uni-erlangen\.de \((?P<hostinfo>.*)\)")
-			personRegex = re.compile(r"(?P<login>[\w\d]{8}|[\w]{4,}) \((?P<group>.*)\) ?(.*)")
+			personRegex = re.compile(r"(?P<login>[\w\d]{8}|[\w]{4,}) \((?P<group>.*)\) (?P<idletime>.*)")
 
 			m = machineRegex.search(token)
 			p = personRegex.search(token)
@@ -147,7 +147,8 @@ def passOnCipData():
 			machines[m.group("hostname")] = {"information": m.group("hostinfo"),
 							 "occupied": True if p else False,
 							 "personname": p.group("login") if p and p.group("login") in app.optedInUsers else "",
-							 "persongroup": p.group("group") if p and p.group("login") in app.optedInUsers else ""}
+							 "persongroup": p.group("group") if p and p.group("login") in app.optedInUsers else "",
+							 "idletime": int(p.group("idletime")) if p and len(p.group("idletime")) > 0 else 0}
 
 		data = tokens[-1]+s.recv(1024)
 

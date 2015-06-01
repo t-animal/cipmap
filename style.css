@@ -63,9 +63,14 @@ h1 {
 	padding:3px;
 }
 
-.kiste.occupied{
+.kiste.occupied {
 	background-color:#F0A0A0;
 }
+
+.kiste.idle {
+	background-color: #F0F0A0;
+}
+
 .kiste.free{
 	background-color:#A0F0A0;
 }
@@ -88,7 +93,8 @@ h1 {
 }
 
 .innerText {
-	font-size:small;
+	font-size:12px;
+	font-family: 'Times New Roman';
 }
 
 h1,h2,h3 {
