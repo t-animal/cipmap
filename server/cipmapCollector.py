@@ -6,6 +6,7 @@ import socket
 import datetime
 import time
 import threading
+import subprocess
 
 class Collector:
 
@@ -173,23 +174,15 @@ def getHostnameList():
 
         machineRegex = re.compile(r"([\w\d]+)\.informatik\.uni-erlangen\.de.*")
 
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect(("faui02", 1338))
+        data = subprocess.check_output(["getent", "netgroup", "icipmap"])
 
-        data = s.recv(1024)
+        lines = data.split()
 
-        while data:
-                lines = data.split("\n")
+        for line in lines[:-1]:
+                m = machineRegex.search(line)
 
-                for line in lines[:-1]:
-                        m = machineRegex.search(line)
-
-                        if not m == None:
-                                hostnames.append(m.group(1))
-
-                data = lines[-1]+s.recv(1024)
-
-        s.close()
+                if not m == None:
+                        hostnames.append(m.group(1))
 
         return hostnames
 
