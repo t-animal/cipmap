@@ -210,8 +210,12 @@ function decorateTutorData(data){
 
 	$("#"+data.currentHostname).addClass("currentMachine");
 
+	var hasTutorRequest = false;
 	$.each(data.requestList, function(index, value){
 		requestTime = parseInt((new Date()-Date.parse(value.requestTime))/1000);
+
+		if(value.hostname==data.currentHostname)
+			hasTutorRequest = true;
 
 		kiste = $("#"+value.hostname);
 		if(kiste.get(0) != undefined){
@@ -227,6 +231,14 @@ function decorateTutorData(data){
 			leaveLectureMode();
 		}
 	});
+
+	if(hasTutorRequest){
+		$("#cancelTutorButton").show();
+		$("#requestTutorButton").hide();
+	}else{
+		$("#cancelTutorButton").hide();
+		$("#requestTutorButton").show();
+	}
 
 	//Increase and display the times now and once every second
 	increaseTimes();
