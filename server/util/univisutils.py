@@ -71,11 +71,11 @@ class UNIVISLectureTerm():
 
 	def __repr__(self):
 		weekdays = ["Mon", "Die", "Mit", "Don", "Fre", "Sam", "Son"]
-		return u"{} {}: {}-{}".format(self.name, weekdays[self.day], self.starttime, self.endtime)
+		return u"{}\t{}: {}-{}".format(self.name, weekdays[self.day], self.starttime, self.endtime)
 
 	def __unicode__(self):
-		weekdays = ["Son", "Mon", "Die", "Mit", "Don", "Fre", "Sam", "Son"]
-		return u"{} {}: {}-{}".format(self.name, weekdays[self.day], self.starttime, self.endtime)
+		weekdays = ["Mon", "Die", "Mit", "Don", "Fre", "Sam", "Son"]
+		return u"{}\t{}: {}-{}".format(self.name, weekdays[self.day], self.starttime, self.endtime)
 
 if __name__ == "__main__":
 	r = UNIVISRoom("02.151a-113", "02.151b-113")
