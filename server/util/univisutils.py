@@ -34,7 +34,7 @@ class UNIVISRoom():
 					continue
 
 				#ignore term if not in this room
-				if term.room == None or term.room.univisref["key"] == roomKey:
+				if term.room == None or not term.room.univisref["key"] == roomKey:
 					continue
 
 				for weekday in term.repeat.text[2:].split(","):
