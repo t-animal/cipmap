@@ -143,7 +143,7 @@ class ThreadPool():
                 for i in range(0, threadCount):
                         self.threads.append(ThreadPool.workerThread(queueSemaphore))
 
-        def run(self, workerObjects, blocking = False):
+	def run(self, workerObjects, blocking = False):
                 queue = list(workerObjects)
 
                 for thread in self.threads:
@@ -178,7 +178,7 @@ def getHostnameList():
 
         lines = data.split()
 
-        for line in lines[:-1]:
+        for line in lines:
                 m = machineRegex.search(line)
 
                 if not m == None:
