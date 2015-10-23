@@ -54,6 +54,20 @@ class UNIVISRoom():
 
 		return current
 
+	def getDirectlyFollowingLectures(self, givenLecture):
+		"""Return the same lectures (same name) directly (less than 31min pause) following a given lecture"""
+		now = datetime.datetime.now()
+		following = []
+
+		for lecture in self.lectures:
+			#ignoring midnight, timechanges, etc
+			pause = (lecture.starttime.hour*60+lecture.starttime.minute)-(givenLecture.endtime.hour*60+givenLecture.endtime.minute)
+
+			if givenLecture.name == lecture.name and 0 < pause < 31:
+				following.append(lecture)
+
+		return following
+
 
 class UNIVISLectureTerm():
 

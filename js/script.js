@@ -159,7 +159,9 @@ function leaveLectureMode(){
 
 //loads tutor Data and draws it afterwards
 function getTutorData(){
-	$.ajax("http://"+server+":"+port+"/tutorRequests/"+$("#lectureSelector").val(),{
+	var currentRoom = names[$("#navigation .cipButton.current").attr("data-cip")][1];
+
+	$.ajax("http://"+server+":"+port+"/tutorRequests/"+currentRoom+"/"+$("#lectureSelector").val(),{
 		dataType:"jsonp",
 		success: function(data){if(data.error != undefined) alert(data.error); else decorateTutorData(data)},
 		beforeSend: function(){$(".loadimage").addClass("rotating");},
@@ -174,7 +176,9 @@ function requestTutor(){
 	if($("#lectureSelector").val() == undefined)
 		return
 
-	$.ajax("http://"+server+":"+port+"/tutorRequests/"+$("#lectureSelector").val()+"?PUT=true",{
+	var currentRoom = names[$("#navigation .cipButton.current").attr("data-cip")][1];
+
+	$.ajax("http://"+server+":"+port+"/tutorRequests/"+currentRoom+"/"+$("#lectureSelector").val()+"?PUT=true",{
 		dataType:"jsonp",
 		type: "PUT",
 		success: function(data){if(data.error != undefined) alert(data.error); else decorateTutorData(data)},
@@ -187,7 +191,9 @@ function requestTutor(){
 
 //cancels a request for a tutor and draws tutordata afterwards
 function cancelTutorRequest(){
-	$.ajax("http://"+server+":"+port+"/tutorRequests/"+$("#lectureSelector").val()+"?DELETE=true",{
+	var currentRoom = names[$("#navigation .cipButton.current").attr("data-cip")][1];
+
+	$.ajax("http://"+server+":"+port+"/tutorRequests/"+currentRoom+"/"+$("#lectureSelector").val()+"?DELETE=true",{
 		dataType:"jsonp",
 		type: "DELETE",
 		success: function(data){if(data.error != undefined) alert(data.error); else decorateTutorData(data)},

@@ -13,6 +13,10 @@ from flask import abort, Flask, request, render_template, Response, json
 from util import ciputils
 from util.univisutils import UNIVISRoom
 
+config = {
+	'keepRequestsInTheseLectures': ["AuD-MT-RUE", "dev-testLecture"]
+}
+
 class CipmapServer(Flask):
 
 	def __init__(self, *args, **kwargs):
@@ -157,23 +161,32 @@ def passOnCipData():
 	app.logger.info("Connection from {} access granted, cipmap data transferred".format(request.remote_addr))
 	return Response("{}({});".format(request.args.get("callback", "default"), json.dumps(machines)), mimetype="application/json")
 
-@app.route("/tutorRequests/<requestedLecture>", methods=["GET", "PUT", "DELETE"])
+@app.route("/tutorRequests/<roomName>/<requestedLectureName>", methods=["GET", "PUT", "DELETE"])
 @ciputils.onlyFromIntranet
-def requestTutor(requestedLecture):
-	requestedLecture = unicode(requestedLecture)
+def requestTutor(roomName, requestedLectureName):
+	requestedLectureName = unicode(requestedLectureName)
 
-	current = [lecture.name for room in app.rooms.values() for lecture in room.getCurrentLectures()]
-	if not requestedLecture in current:
+	if not roomName in app.rooms:
+		current = {}
+	else:
+		current = {lecture.name:lecture for lecture in app.rooms[roomName].getCurrentLectures()}
+
+
+	if not requestedLectureName in current:
 		return Response("{}({});".format(request.args.get("callback", "default"),
-							json.dumps({"error":"Momentan findet keine solche Uebung statt"})), mimetype="application/json")
+							json.dumps({"error":"Momentan findet in diesem Raum keine solche Uebung statt"})), mimetype="application/json")
+
+	#make requests unique per lecture, not per lecture name
+	requestedLecture = current[requestedLectureName]
 
 	#clean timed-out requests:
 	for lecture in app.tutorRequests.keys():
-		for tutorRequest in app.tutorRequests[lecture]:
-			if (datetime.datetime.utcnow()-tutorRequest["requestTime"]).total_seconds() > 90 * 60:
-				app.tutorRequests[lecture].remove(tutorRequest)
+		if lecture.endtime < datetime.datetime.now().time():
+			following = {lecture.name:lecture for lecture in app.rooms[roomName].getDirectlyFollowingLectures(lecture)}
 
-		if len(app.tutorRequests[lecture]) == 0:
+			if requestedLectureName in following and requestedLectureName in config["keepRequestsInTheseLectures"]:
+				app.tutorRequests[following[requestedLectureName]] = app.tutorRequests[lecture]
+
 			del app.tutorRequests[lecture]
 
 	remoteAddress = request.remote_addr
@@ -182,6 +195,7 @@ def requestTutor(requestedLecture):
 		remoteAddress = remoteAddress[remoteAddress.rindex(":")+1:]
 	remote_hostname = check_output(["nslookup", remoteAddress]).split("=")[1][1:].split(".")[0]
 
+	#create new request
 	if request.method == "PUT" or "PUT" in request.args:
 		if not requestedLecture in app.tutorRequests:
 			app.tutorRequests[requestedLecture] = []
@@ -189,6 +203,7 @@ def requestTutor(requestedLecture):
 		if not remote_hostname in [x["hostname"] for x in app.tutorRequests[requestedLecture]]:
 			app.tutorRequests[requestedLecture].append({"hostname":remote_hostname, "requestTime":datetime.datetime.utcnow()})
 
+	#remove a request
 	if request.method == "DELETE" or "DELETE" in request.args:
 		if requestedLecture in app.tutorRequests:
 			for x in app.tutorRequests[requestedLecture]:
