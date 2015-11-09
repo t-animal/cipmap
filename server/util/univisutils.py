@@ -63,7 +63,7 @@ class UNIVISRoom():
 			#ignoring midnight, timechanges, etc
 			pause = (lecture.starttime.hour*60+lecture.starttime.minute)-(givenLecture.endtime.hour*60+givenLecture.endtime.minute)
 
-			if givenLecture.name == lecture.name and 0 < pause < 31:
+			if givenLecture.name == lecture.name and 0 <= pause <= 30:
 				following.append(lecture)
 
 		return following
