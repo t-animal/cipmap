@@ -51,7 +51,7 @@ class CipmapServer(Flask):
 
 		self.logger.info("Start parsing univis")
 		self.rooms = {"02.151"  :UNIVISRoom("02.151a-113", "02.151b-113"),
-			  "02.135"  :UNIVISRoom("02.135.113"),
+			  "02.135"  :UNIVISRoom("02.135-113"),
 			  "01.155"  :UNIVISRoom("01.155-113"),
 			  "01.153"  :UNIVISRoom("01.153-113"),
 			  "00.153"  :UNIVISRoom("00.153-113"),
