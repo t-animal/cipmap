@@ -129,7 +129,7 @@ map = {
 {"id":"faui02s","name":"faui02s","y":6,"x":3},
 {"id":"faui02t","name":"faui02t","y":6,"x":4},
 {"id":"faui02u","name":"faui02u","y":8,"x":0},
-{"id":"faui02u","name":"faui02v","y":8,"x":1},
+{"id":"faui02v","name":"faui02v","y":8,"x":1},
 {"id":"faui02w","name":"faui02w","y":8,"x":2},
 {"id":"faui02x","name":"faui02x","y":8,"x":3},
 {"id":"faui02y","name":"faui02y","y":8,"x":4},
