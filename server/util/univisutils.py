@@ -44,6 +44,20 @@ class UNIVISRoom():
 					self.lectures.add(UNIVISLectureTerm(unicode(lecture.short.text), weekday,
 						                                    term.starttime.text, term.endtime.text))
 
+		# now = datetime.datetime.now()
+		# then = now.replace(hour = 23)
+		# new = UNIVISLectureTerm(unicode("zz-dev-testLecture"), now.weekday()+1,
+		# 				                                    now.strftime("%H:%M"), then.strftime("%H:%M"))
+		# print new
+		# self.lectures.add(new)
+
+		# now = then.replace(minute = then.minute+5)
+		# then = now.replace(minute = now.minute+5)
+		# new = UNIVISLectureTerm(unicode("dev-testLecture"), now.weekday()+1,
+		# 				                                    now.strftime("%H:%M"), then.strftime("%H:%M"))
+		# print new
+		# self.lectures.add(new)
+
 	def getCurrentLectures(self):
 		now = datetime.datetime.now()
 		current = []
@@ -98,7 +112,8 @@ if __name__ == "__main__":
 	for lecture in r.lectures:
 		print unicode(lecture)
 	
-	print "Current "+unicode(r.getCurrentLectures())
+	print "Current "+unicode(list(r.lectures)[16])
+	print "Following "+unicode(r.getDirectlyFollowingLectures(list(r.lectures)[16]))
 
 	#for lecture in r.getCurrentLectures():
 #		print unicode(lecture)

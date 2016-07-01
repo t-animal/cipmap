@@ -162,8 +162,10 @@ def passOnCipData():
 	return Response("{}({});".format(request.args.get("callback", "default"), json.dumps(machines)), mimetype="application/json")
 
 @app.route("/tutorRequests/<roomName>/<requestedLectureName>", methods=["GET", "PUT", "DELETE"])
+@app.route("/tutorRequest/remove/<roomName>/<requestedLectureName>/<hostname>")
+@app.route("/tutorRequest/add/<roomName>/<requestedLectureName>/<hostname>")
 @ciputils.onlyFromIntranet
-def requestTutor(roomName, requestedLectureName):
+def requestTutor(roomName, requestedLectureName, hostname=None):
 	requestedLectureName = unicode(requestedLectureName)
 
 	if not roomName in app.rooms:
@@ -189,14 +191,17 @@ def requestTutor(roomName, requestedLectureName):
 
 			del app.tutorRequests[lecture]
 
-	remoteAddress = request.remote_addr
-	if ":" in request.remote_addr and "." in request.remote_addr:
-		#tunneled ipv4, use only ipv4 part
-		remoteAddress = remoteAddress[remoteAddress.rindex(":")+1:]
-	remote_hostname = check_output(["nslookup", remoteAddress]).split("=")[1][1:].split(".")[0]
+	if hostname == None:
+		remoteAddress = request.remote_addr
+		if ":" in request.remote_addr and "." in request.remote_addr:
+			#tunneled ipv4, use only ipv4 part
+			remoteAddress = remoteAddress[remoteAddress.rindex(":")+1:]
+		remote_hostname = check_output(["nslookup", remoteAddress]).split("=")[1][1:].split(".")[0]
+	else:
+		remote_hostname = hostname
 
 	#create new request
-	if request.method == "PUT" or "PUT" in request.args:
+	if request.method == "PUT" or "PUT" in request.args or request.url_rule.rule[14:].startswith("add"):
 		if not requestedLecture in app.tutorRequests:
 			app.tutorRequests[requestedLecture] = []
 
@@ -204,7 +209,7 @@ def requestTutor(roomName, requestedLectureName):
 			app.tutorRequests[requestedLecture].append({"hostname":remote_hostname, "requestTime":datetime.datetime.utcnow()})
 
 	#remove a request
-	if request.method == "DELETE" or "DELETE" in request.args:
+	if request.method == "DELETE" or "DELETE" in request.args or request.url_rule.rule[14:].startswith("remove"):
 		if requestedLecture in app.tutorRequests:
 			for x in app.tutorRequests[requestedLecture]:
 				if x["hostname"] == remote_hostname:
@@ -218,8 +223,20 @@ def requestTutor(roomName, requestedLectureName):
 	except KeyError as e:
 		returnVal = json.dumps({"requestList":[], "currentHostname":remote_hostname})
 
+
 	app.logger.info("Connection from {} access granted, tutor requests transferred".format(request.remote_addr))
 	return Response("{}({});".format(request.args.get("callback", "default"), returnVal), mimetype="application/json")
+
+@app.route("/tutorRequests/remove/<lecture>/<hostname>")
+def removeTutorRequest(hostname):
+	if requestedLecture in app.tutorRequests:
+		for x in app.tutorRequests[requestedLecture]:
+			if x["hostname"] == hostname:
+				app.tutorRequests[requestedLecture].remove(x)
+
+		if len(app.tutorRequests[requestedLecture]) == 0:
+			del app.tutorRequests[requestedLecture]
+
 
 @app.route("/currentLectures/<room>")
 def getCurrentLectures(room):
